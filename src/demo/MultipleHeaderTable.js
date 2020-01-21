@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import Table from '../PowerTable'
+import Table from '../HiTable'
 
 let columns = [
   {

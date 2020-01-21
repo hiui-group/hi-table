@@ -64,7 +64,7 @@ const StandardTable = () => {
         show={showPopper}
         attachEle={colMenuRef.current}
         zIndex={1040}
-        placement='bottom-right'
+        placement='bottom-end'
         width='250'
       >
         <div ref={popperMenu}>

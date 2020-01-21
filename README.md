@@ -539,7 +539,7 @@ export default RowSelectionTable
 通过控制 `highlightedRowKeys` 来控制表格需要高亮显示的行，同时表格自带双击行高亮和双击取消行高亮。需要注意的是，通过 `highlightedRowKeys` 配置的行高亮，不受双击影响。
 
 ```js
-import Table from '../PowerTable'
+import Table from '../HiTable'
 import React from 'react'
 
 let columns = [
@@ -632,7 +632,7 @@ export default RowErrorTable
 通过在 `columns` 中配置列的 `avg` 和 `sum` 来开启求和与平均数的展示
 
 ```js
-import Table from '../PowerTable'
+import Table from '../HiTable'
 import React from 'react'
 
 let columns = [
@@ -717,7 +717,7 @@ export default App
 通过配置 `highlightedColKeys` 来控制表格列的高亮
 
 ```js
-import Table from '../PowerTable'
+import Table from '../HiTable'
 import React from 'react'
 
 let columns = [
@@ -811,7 +811,7 @@ export default RowHighlightedTable
 通过配置 `bordered` 来使表格带边框展示
 
 ```js
-import Table from '../PowerTable'
+import Table from '../HiTable'
 import React from 'react'
 
 let columns = [
@@ -901,7 +901,7 @@ export default BorderedTable
 通过设置 `size` 来使表格按照不同尺寸进行展示
 
 ```js
-import Table from '../PowerTable'
+import Table from '../HiTable'
 import React from 'react'
 
 let columns = [
@@ -989,7 +989,7 @@ export default function() {
 通过配置 `showColMenu` 来开启列操作功能，默认自带列高亮和列冻结功能，当在 `columns` 中的列配置了 `sorter`  函数，列操作将会具备排序功能
 
 ```js
-import Table from '../PowerTable'
+import Table from '../HiTable'
 import React from 'react'
 
 let columns = [
@@ -1083,7 +1083,7 @@ export default function () {
 当表格数据较多时，可以通过设置 `pagination` 来将表格进行分页
 
 ```js
-import Table from '../PowerTable'
+import Table from '../HiTable'
 import React from 'react'
 
 let data = []
@@ -1172,7 +1172,7 @@ export default Demo
 通过设置 `sticky` 使表格的头部到达浏览器视口顶端的是时候，开始吸附至浏览器顶端，直至表格整体从视口消失
 
 ```js
-import Table from '../PowerTable'
+import Table from '../HiTable'
 import React from 'react'
 
 let columns = [
@@ -1235,7 +1235,7 @@ export default function () {
 
 ```js
 import React from 'react'
-import Table from '../PowerTable'
+import Table from '../HiTable'
 
 const TreeTable = () => {
   return (
@@ -1290,7 +1290,7 @@ export default TreeTable
 需要设置 `columns` 中对应列的 `render` 方法，返回一个如`{children: xx, colSpan:xx, rowSpan: xx}` 的数据结构来表示该单元格的合并方式
 
 ```js
-import Table from '../PowerTable'
+import Table from '../HiTable'
 import React from 'react'
 
 const renderContent = (value, row, index) => {
@@ -1394,7 +1394,7 @@ export default MergeCellTable
 通过设置 `maxHeight` 来使表格头部固定，当表格主体内容高度大于 `maxHeight` 值时，表头将固定在表格顶部
 
 ```js
-import Table from '../PowerTable'
+import Table from '../HiTable'
 import React from 'react'
 
 let columns = [
@@ -1502,7 +1502,7 @@ export default FixedHeaderTable
 适用于列较多，需要某些列固定以方便查看表格数据的场景，需要设置 `fixedToColumn` 来确定固定至的列
 
 ```js
-import Table from '../PowerTable'
+import Table from '../HiTable'
 import React from 'react'
 
 let columns = [
@@ -1609,7 +1609,7 @@ export default FixedTable
 通过设置 `columns` 中每列的 `children` 来表示表头间的层级关系
 ```js
 import React from 'react'
-import Table from '../PowerTable'
+import Table from '../HiTable'
 
 let columns = [
   {
@@ -1799,7 +1799,7 @@ export default RowExpandedTable
 通过设置 `resizable` 使列可以动态调整宽度
 
 ```js
-import Table from '../PowerTable'
+import Table from '../HiTable'
 import React, { useRef, useState } from 'react'
 import { Button, Popper, Switch, Icon } from '@hi-ui/hiui'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
@@ -1904,7 +1904,7 @@ export default DynamicTable
 通过设置 `setting` 来开启控制面板功能，在控制面板中可以调整列的顺序，控制列的显示和隐藏
 
 ```js
-import Table from '../PowerTable'
+import Table from '../HiTable'
 import React from 'react'
 
 
@@ -2009,7 +2009,7 @@ export default SettingTable
 通过设置 `standard` 来快速同时开启 `showColMenu = true, sticky = true, bordered = true, setting = true, striped = true`
 
 ```js
-import Table from '../PowerTable'
+import Table from '../HiTable'
 import React from 'react'
 
 let columns = [

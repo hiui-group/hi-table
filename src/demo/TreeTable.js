@@ -1,5 +1,5 @@
 import React from 'react'
-import Table from '../PowerTable'
+import Table from '../HiTable'
 
 const TreeTable = () => {
   return (

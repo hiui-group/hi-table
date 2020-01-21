@@ -1,4 +1,4 @@
-import Table from '../PowerTable'
+import Table from '../HiTable'
 import React from 'react'
 
 const renderContent = (value, row, index) => {
