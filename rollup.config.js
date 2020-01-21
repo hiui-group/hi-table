@@ -6,7 +6,7 @@ import commonjs from 'rollup-plugin-commonjs'
 export default {
   input: 'src/HiTable',
   moduleName: 'HiTable',
-  external: ['react', 'react-dom', '@hi-ui/hiui', 'axios'],
+  external: ['react', 'react-dom', '@hi-ui/hiui', 'axios', 'react-beautiful-dnd'],
   globals: {
     react: 'React',
     'react-dom': 'ReactDOM'
