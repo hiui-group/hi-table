@@ -3,15 +3,16 @@
 ## 使用
 
 ```bash
-npm i @mi/power-table --save
+npm i @hi-ui/hi-table --save
 // or
-yarn add @mi/power-table
+yarn add @hi-ui/hi-table
 ```
 
 ```jsx
-import Table from '@mi/power-table'
+import Table from '@hi-ui/hi-table'
 render( <Table columns={columns} data={data} />, document.getElementById('app'))
 ```
+
 ## demo 演示
 
 ```bash
@@ -530,6 +531,7 @@ const RowSelectionTable = () => {
 
 export default RowSelectionTable
 ```
+
 ### 行高亮
 
 ![行高亮](.src/demo/img/row-highlight.png)
