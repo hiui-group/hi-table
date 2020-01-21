@@ -1,0 +1,54 @@
+@import './variable.scss';
+
+.#{$table} {
+  position: relative;
+  &__container {
+    position: relative;
+  }
+
+  &__container table {
+    width: 100%;
+    border-collapse: separate;
+    background: #fff;
+    margin: 0;
+    box-sizing: border-box;
+    display: table;
+    border-spacing: 0;
+
+    col {
+      display: table-column;
+    }
+
+    td,
+    th {
+      // white-space: nowrap;
+      padding-left: 8px;
+      padding-right: 16px;
+      border-bottom: 1px solid $borderColor;
+      text-align: left;
+      box-sizing: border-box;
+    }
+
+    th {
+      background-color: #fbfbfb;
+      color: #999999;
+      position: relative;
+
+      i:hover {
+        color: $activeColor;
+      }
+    }
+
+    td {
+      color: #333333;
+      word-break: break-word;
+    }
+
+    tr {
+      height: $normalHeight;
+      font-size: $nornamFontSize;
+      padding: 0;
+      box-sizing: border-box;
+    }
+  }
+}
