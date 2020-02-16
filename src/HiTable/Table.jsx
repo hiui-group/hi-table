@@ -3,7 +3,11 @@ import HeaderTable from './HeaderTable'
 import BodyTable from './BodyTable'
 import TableContext from './context'
 import classnames from 'classnames'
-import { getFixedDataByFixedColumn, getScrollBarSize, flatTreeData } from './util'
+import {
+  getFixedDataByFixedColumn,
+  getScrollBarSize,
+  flatTreeData
+} from './util'
 import { Pagination } from '@hi-ui/hiui'
 import axios from 'axios'
 import FixedBodyTable from './FixedBodyTable'
@@ -47,27 +51,27 @@ const Table = props => {
     setSortCol,
     visibleCols,
     setVisibleCols,
-    setCacheVisibleCols
+    setCacheVisibleCols,
+    scrollWidth
   } = props
 
-  const [realColumnsWidth, setRealColumnsWidth] = useState(columns.map(c => c.width || 'auto'))
+  const [realColumnsWidth, setRealColumnsWidth] = useState(
+    columns.map(c => c.width || 'auto')
+  )
 
   const firstRowRef = useRef(null)
 
-  useEffect(
-    () => {
-      setRealColumnsWidth(columns.map(c => c.width || 'auto'))
-      setTimeout(() => {
-        if (firstRowRef.current) {
-          const _realColumnsWidth = Array.from(firstRowRef.current.childNodes).map(
-            node => node.clientWidth
-          )
-          setRealColumnsWidth(_realColumnsWidth)
-        }
-      })
-    },
-    [columns]
-  )
+  useEffect(() => {
+    setRealColumnsWidth(columns.map(c => c.width || 'auto'))
+    setTimeout(() => {
+      if (firstRowRef.current) {
+        const _realColumnsWidth = Array.from(
+          firstRowRef.current.childNodes
+        ).map(node => node.clientWidth)
+        setRealColumnsWidth(_realColumnsWidth)
+      }
+    })
+  }, [columns])
 
   const flattedColumns = flatTreeData(columns)
   // 有表头分组那么也要 bordered
@@ -107,54 +111,53 @@ const Table = props => {
     highlightRows.filter(row => !highlightedRowKeys.includes(row.key))
   )
   // 需要右对齐的列
-  const alignRightColumns = columns.filter(c => c.align === 'right').map(col => col.dataKey)
+  const alignRightColumns = columns
+    .filter(c => c.align === 'right')
+    .map(col => col.dataKey)
   // baseTable
   const baseTable = useRef(null)
   const [baseTableWidth, setBaseTableWidth] = useState('100%')
   const clientWidth = baseTable.current && baseTable.current.clientWidth
-  useEffect(
-    () => {
-      setBaseTableWidth(clientWidth)
-    },
-    [clientWidth]
-  )
+  useEffect(() => {
+    setBaseTableWidth(clientWidth)
+  }, [clientWidth])
 
-  useEffect(
-    () => {
-      if (_ceiling) {
-        window.addEventListener('scroll', () => {
-          if (
-            hiTable &&
-            hiTable.current.getBoundingClientRect().top <= 0 &&
-            hiTable &&
-            hiTable.current.getBoundingClientRect().bottom >= 35
-          ) {
-            setCeiling(true)
-            syncScrollLeft(bodyTableRef.current.scrollLeft, stickyHeaderRef.current)
-          } else {
-            setCeiling(false)
-          }
-          if (hiTable.current.getBoundingClientRect().bottom < 35) {
-            setHeaderVisible(false)
-          } else {
-            setHeaderVisible(true)
-          }
+  useEffect(() => {
+    if (_ceiling) {
+      window.addEventListener('scroll', () => {
+        if (
+          hiTable &&
+          hiTable.current.getBoundingClientRect().top <= 0 &&
+          hiTable &&
+          hiTable.current.getBoundingClientRect().bottom >= 35
+        ) {
+          setCeiling(true)
+          syncScrollLeft(
+            bodyTableRef.current.scrollLeft,
+            stickyHeaderRef.current
+          )
+        } else {
+          setCeiling(false)
+        }
+        if (hiTable.current.getBoundingClientRect().bottom < 35) {
+          setHeaderVisible(false)
+        } else {
+          setHeaderVisible(true)
+        }
+      })
+    }
+    if (dataSource) {
+      const fetchConfig = dataSource(1)
+      axios(fetchConfig)
+        .then(res => {
+          setServerTableConfig(res)
         })
-      }
-      if (dataSource) {
-        const fetchConfig = dataSource(1)
-        axios(fetchConfig)
-          .then(res => {
-            setServerTableConfig(res)
-          })
-          .catch(() => {
-            // 此处用于模拟服务端表格返回
-            setServerTableConfig(mockServerTableConfig)
-          })
-      }
-    },
-    [_ceiling, dataSource]
-  )
+        .catch(() => {
+          // 此处用于模拟服务端表格返回
+          setServerTableConfig(mockServerTableConfig)
+        })
+    }
+  }, [_ceiling, dataSource])
   return (
     <TableContext.Provider
       value={{
@@ -207,7 +210,9 @@ const Table = props => {
         setSortCol,
         visibleCols,
         setVisibleCols,
-        setCacheVisibleCols
+        setCacheVisibleCols,
+        // 出现横向滚动条时的宽度
+        scrollWidth
       }}
     >
       <div
@@ -224,51 +229,80 @@ const Table = props => {
           <BodyTable />
         </div>
         {/* Fixed table 固定列表格 */}
-        {fixedColumn &&
-          realFixedColumns.length > 0 &&
-          <div className={classnames(`${prefix}__container`, `${prefix}__container--fixed`)}>
+        {fixedColumn && realFixedColumns.length > 0 && (
+          <div
+            className={classnames(
+              `${prefix}__container`,
+              `${prefix}__container--fixed`
+            )}
+          >
             <HeaderTable isFixed />
             <FixedBodyTable />
-          </div>}
+          </div>
+        )}
         {/* Pagination 分页组件 */}
-        {_pagination &&
+        {_pagination && (
           <div className={`${prefix}__pagination`}>
             <Pagination {..._pagination} />
-          </div>}
+          </div>
+        )}
       </div>
     </TableContext.Provider>
   )
 }
 
-const TableWrapper = ({columns, uniqueId, standard, ...settingProps}) => {
-  const _sortCol = uniqueId && window.localStorage.getItem(`${uniqueId}_sortCol`)
-    ? JSON.parse(window.localStorage.getItem(`${uniqueId}_sortCol`)) : columns
+const TableWrapper = ({ columns, uniqueId, standard, ...settingProps }) => {
+  const _sortCol =
+    uniqueId && window.localStorage.getItem(`${uniqueId}_sortCol`)
+      ? JSON.parse(window.localStorage.getItem(`${uniqueId}_sortCol`))
+      : columns
 
-  const _visibleCols = uniqueId && window.localStorage.getItem(`${uniqueId}_visibleCols`)
-    ? JSON.parse(window.localStorage.getItem(`${uniqueId}_visibleCols`)) : columns
+  const _visibleCols =
+    uniqueId && window.localStorage.getItem(`${uniqueId}_visibleCols`)
+      ? JSON.parse(window.localStorage.getItem(`${uniqueId}_visibleCols`))
+      : columns
 
-  const _cacheVisibleCols = uniqueId && window.localStorage.getItem(`${uniqueId}_cacheVisibleCols`)
-    ? JSON.parse(window.localStorage.getItem(`${uniqueId}_cacheVisibleCols`)) : columns
+  const _cacheVisibleCols =
+    uniqueId && window.localStorage.getItem(`${uniqueId}_cacheVisibleCols`)
+      ? JSON.parse(window.localStorage.getItem(`${uniqueId}_cacheVisibleCols`))
+      : columns
   // 列操作逻辑
   const [sortCol, setSortCol] = useState(_sortCol)
   const [visibleCols, setVisibleCols] = useState(_visibleCols)
   const [cacheVisibleCols, setCacheVisibleCols] = useState(_cacheVisibleCols)
   useEffect(() => {
     window.localStorage.setItem(`${uniqueId}_sortCol`, JSON.stringify(sortCol))
-    window.localStorage.setItem(`${uniqueId}_visibleCols`, JSON.stringify(visibleCols))
-    window.localStorage.setItem(`${uniqueId}_cacheVisibleCols`, JSON.stringify(cacheVisibleCols))
+    window.localStorage.setItem(
+      `${uniqueId}_visibleCols`,
+      JSON.stringify(visibleCols)
+    )
+    window.localStorage.setItem(
+      `${uniqueId}_cacheVisibleCols`,
+      JSON.stringify(cacheVisibleCols)
+    )
   }, [sortCol, visibleCols, cacheVisibleCols])
-  const standardPreset = standard ? {showColMenu: true, sticky: true, bordered: true, setting: true, striped: true} : {}
+  const standardPreset = standard
+    ? {
+      showColMenu: true,
+      sticky: true,
+      bordered: true,
+      setting: true,
+      striped: true
+    }
+    : {}
   // ***************
-  return <Table columns={cacheVisibleCols}
-    {...settingProps}
-    {...standardPreset}
-    sortCol={sortCol}
-    setSortCol={setSortCol}
-    visibleCols={visibleCols}
-    setVisibleCols={setVisibleCols}
-    setCacheVisibleCols={setCacheVisibleCols}
-  />
+  return (
+    <Table
+      columns={cacheVisibleCols}
+      {...settingProps}
+      {...standardPreset}
+      sortCol={sortCol}
+      setSortCol={setSortCol}
+      visibleCols={visibleCols}
+      setVisibleCols={setVisibleCols}
+      setCacheVisibleCols={setCacheVisibleCols}
+    />
+  )
 }
 
 export default TableWrapper

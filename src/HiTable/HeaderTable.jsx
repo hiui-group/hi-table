@@ -5,7 +5,12 @@ import SettingMenu from './SettingMenu'
 import _ from 'lodash'
 import classnames from 'classnames'
 import { Checkbox } from '@hi-ui/hiui'
-import { flatTreeData, setDepth, getLeafChildren, groupDataByDepth } from './util'
+import {
+  flatTreeData,
+  setDepth,
+  getLeafChildren,
+  groupDataByDepth
+} from './util'
 import { Resizable } from 'react-resizable'
 
 const HeaderTable = ({ isFixed, bodyWidth }) => {
@@ -31,7 +36,8 @@ const HeaderTable = ({ isFixed, bodyWidth }) => {
     realColumnsWidth,
     setRealColumnsWidth,
     resizable,
-    setting
+    setting,
+    scrollWidth
   } = useContext(TableContext)
 
   // ******************** 隐藏滚动条
@@ -73,32 +79,32 @@ const HeaderTable = ({ isFixed, bodyWidth }) => {
   const groupedColumns = groupDataByDepth(_columns, maxDepth)
   // ********************
 
-  useEffect(
-    () => {
-      if (headerInner.current) {
-        const _minColWidth = Array.from(
-          headerInner.current.childNodes[1].childNodes[0].childNodes
-        ).map(
-          th => {
-            return th.childNodes[0].className === 'power-table__header__title'
-              ? th.childNodes[0].offsetWidth
-              : 0
-          }
-        )
-        setMinColWidth(_minColWidth)
-      }
-    },
-    [columns, headerInner]
-  )
+  useEffect(() => {
+    if (headerInner.current) {
+      const _minColWidth = Array.from(
+        headerInner.current.childNodes[1].childNodes[0].childNodes
+      ).map(th => {
+        return th.childNodes[0].className === 'power-table__header__title'
+          ? th.childNodes[0].offsetWidth
+          : 0
+      })
+      setMinColWidth(_minColWidth)
+    }
+  }, [columns, headerInner])
 
   // ********************处理排序逻辑
   // 可以排序的必须的是最后一级列
 
-  const hasSorterColumn = columnsgroup.filter(col => col.sorter).map(sorterCol => sorterCol.dataKey)
+  const hasSorterColumn = columnsgroup
+    .filter(col => col.sorter)
+    .map(sorterCol => sorterCol.dataKey)
 
   // ******************** 行渲染 ***********************
   const renderBaseRow = (cols, index, isSticky) => {
-    const _colums = [rowSelection && index === 0 && 'checkbox', expandedRender && index === 0 && 'expandedButton']
+    const _colums = [
+      rowSelection && index === 0 && 'checkbox',
+      expandedRender && index === 0 && 'expandedButton'
+    ]
       .concat(cols)
       .filter(column => !!column)
     return (
@@ -116,10 +122,14 @@ const HeaderTable = ({ isFixed, bodyWidth }) => {
               >
                 <Checkbox
                   checked={isAllChecked}
-                  indeterminate={!isAllChecked && rowSelection.selectedRowKeys.length > 0}
+                  indeterminate={
+                    !isAllChecked && rowSelection.selectedRowKeys.length > 0
+                  }
                   onChange={e => {
                     if (rowSelection.onChange) {
-                      rowSelection.onChange(isAllChecked ? [] : flatTreeData(data).map(d => d.key))
+                      rowSelection.onChange(
+                        isAllChecked ? [] : flatTreeData(data).map(d => d.key)
+                      )
                     }
                   }}
                 />
@@ -133,7 +143,9 @@ const HeaderTable = ({ isFixed, bodyWidth }) => {
                 style={{
                   boxSizing: 'border-box'
                 }}
-              ><span /></th>
+              >
+                <span />
+              </th>
             )
           } else {
             cell = (
@@ -143,28 +155,31 @@ const HeaderTable = ({ isFixed, bodyWidth }) => {
                 rowSpan={c.rowSpan}
                 style={{
                   boxSizing: 'border-box',
-                  textAlign: alignRightColumns.includes(c.dataKey) ? 'right' : 'left',
+                  textAlign: alignRightColumns.includes(c.dataKey)
+                    ? 'right'
+                    : 'left',
                   background:
-                    highlightedColKeys.includes(c.dataKey) || highlightColumns.includes(c.dataKey)
+                    highlightedColKeys.includes(c.dataKey) ||
+                    highlightColumns.includes(c.dataKey)
                       ? '#F4F4F4'
                       : '#fbfbfb'
                 }}
               >
                 <span className='power-table__header__title'>
                   {c.title}
-                  {showColMenu &&
-                    c.isLast &&
+                  {showColMenu && c.isLast && (
                     <ColumnMenu
                       columnKey={c.dataKey}
                       canSort={hasSorterColumn.includes(c.dataKey)}
                       isSticky={isSticky}
-                    />}
+                    />
+                  )}
                 </span>
               </th>
             )
           }
-          return resizable && idx !== cols.length - 1
-            ? <Resizable
+          return resizable && idx !== cols.length - 1 ? (
+            <Resizable
               key={idx}
               width={realColumnsWidth[idx]}
               height={0}
@@ -172,10 +187,14 @@ const HeaderTable = ({ isFixed, bodyWidth }) => {
                 const minWidth = minColWidth[idx] + 31
                 const anotherMinWidth = minColWidth[idx + 1] + 31
                 let nextWidth = size.width > minWidth ? size.width : minWidth
-                let anotherWidth = realColumnsWidth[idx + 1] + realColumnsWidth[idx] - nextWidth
+                let anotherWidth =
+                  realColumnsWidth[idx + 1] + realColumnsWidth[idx] - nextWidth
                 if (anotherWidth <= anotherMinWidth) {
                   anotherWidth = anotherMinWidth
-                  nextWidth = realColumnsWidth[idx + 1] - anotherMinWidth + realColumnsWidth[idx]
+                  nextWidth =
+                    realColumnsWidth[idx + 1] -
+                    anotherMinWidth +
+                    realColumnsWidth[idx]
                 }
                 const newRealColumnsWidth = [...realColumnsWidth]
                 newRealColumnsWidth[idx] = nextWidth
@@ -186,7 +205,9 @@ const HeaderTable = ({ isFixed, bodyWidth }) => {
             >
               {cell}
             </Resizable>
-            : cell
+          ) : (
+            cell
+          )
         })}
       </tr>
     )
@@ -216,42 +237,59 @@ const HeaderTable = ({ isFixed, bodyWidth }) => {
           overflowY: maxHeight && !isFixed ? 'scroll' : 'hidden',
           overflowX: isFixed ? 'hidden' : 'scroll',
           marginBottom: !isFixed && -scrollBarSize,
-          height: (headerInner.current && headerInner.current.clientHeight + 20) || 'auto'
+          height:
+            (headerInner.current && headerInner.current.clientHeight + 20) ||
+            'auto'
         }}
         onScroll={e => {
-          syncScrollLeft(headerTableRef.current.scrollLeft, bodyTableRef.current)
-          syncScrollLeft(headerTableRef.current.scrollLeft, stickyHeaderRef.current)
+          syncScrollLeft(
+            headerTableRef.current.scrollLeft,
+            bodyTableRef.current
+          )
+          syncScrollLeft(
+            headerTableRef.current.scrollLeft,
+            stickyHeaderRef.current
+          )
         }}
       >
-        <table style={{ width: isFixed ? 'auto' : '100%' }} ref={headerInner}>
+        <table
+          style={{ width: isFixed ? 'auto' : scrollWidth || '100%' }}
+          ref={headerInner}
+        >
           <colgroup>
-            {columnsgroup.map((c, index) =>
+            {columnsgroup.map((c, index) => (
               <col
                 key={index}
                 style={{
-                  width: isFixed || resizable ? realColumnsWidth[index] : c.width,
-                  minWidth: isFixed || resizable ? realColumnsWidth[index] : c.width
+                  width:
+                    isFixed || resizable ? realColumnsWidth[index] : c.width,
+                  minWidth:
+                    isFixed || resizable ? realColumnsWidth[index] : c.width
                 }}
               />
-            )}
+            ))}
           </colgroup>
           <thead>
-            {groupedColumns.map((group, index) => renderBaseRow(group, index, false))}
+            {groupedColumns.map((group, index) =>
+              renderBaseRow(group, index, false)
+            )}
           </thead>
         </table>
       </div>
     </div>,
-    !isFixed &&
-      ceiling &&
+    !isFixed && ceiling && (
       <div
         key='ceiling'
         className={classnames(`${prefix}__header`, `${prefix}__header--sticky`)}
         ref={stickyHeaderRef}
-        style={{ width: bodyWidth, borderLeft: bordered && '1px solid #e7e7e7' }}
+        style={{
+          width: bodyWidth,
+          borderLeft: bordered && '1px solid #e7e7e7'
+        }}
       >
-        <table style={{ width: isFixed ? 'auto' : '100%' }}>
+        <table style={{ width: scrollWidth || '100%' }}>
           <colgroup>
-            {columnsgroup.map((c, idx) =>
+            {columnsgroup.map((c, idx) => (
               <col
                 key={idx}
                 style={{
@@ -259,23 +297,28 @@ const HeaderTable = ({ isFixed, bodyWidth }) => {
                   minWidth: resizable ? realColumnsWidth[idx] : c.width
                 }}
               />
-            )}
+            ))}
           </colgroup>
           <thead>
-            {groupedColumns.map((group, idx) => renderBaseRow(group, idx, true))}
+            {groupedColumns.map((group, idx) =>
+              renderBaseRow(group, idx, true)
+            )}
           </thead>
         </table>
-      </div>,
-    isFixed &&
-      ceiling &&
+      </div>
+    ),
+    isFixed && ceiling && (
       <div
         key='fixed-ceiling'
         className={classnames(`${prefix}__header`, `${prefix}__header--sticky`)}
-        style={{ display: ceiling ? 'block' : 'none', borderLeft: bordered && '1px solid #e7e7e7' }}
+        style={{
+          display: ceiling ? 'block' : 'none',
+          borderLeft: bordered && '1px solid #e7e7e7'
+        }}
       >
-        <table style={{ width: isFixed ? 'auto' : '100%' }}>
+        <table style={{ width: 'auto' }}>
           <colgroup>
-            {columnsgroup.map((c, idx) =>
+            {columnsgroup.map((c, idx) => (
               <col
                 key={idx}
                 style={{
@@ -283,13 +326,16 @@ const HeaderTable = ({ isFixed, bodyWidth }) => {
                   minWidth: realColumnsWidth[idx]
                 }}
               />
-            )}
+            ))}
           </colgroup>
           <thead>
-            {groupedColumns.map((group, idx) => renderBaseRow(group, idx, true))}
+            {groupedColumns.map((group, idx) =>
+              renderBaseRow(group, idx, true)
+            )}
           </thead>
         </table>
       </div>
+    )
   ]
 }
 

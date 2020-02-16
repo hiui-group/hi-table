@@ -21,7 +21,8 @@ const BodyTable = props => {
     syncScrollTop,
     firstRowRef,
     realColumnsWidth,
-    resizable
+    resizable,
+    scrollWidth
   } = useContext(TableContext)
   // **************** 获取colgroup
   let _columns = _.cloneDeep(columns)
@@ -43,7 +44,9 @@ const BodyTable = props => {
 
     if (sorter) {
       _data =
-        activeSorterType === 'ascend' ? [...data].sort(sorter) : [...data].sort(sorter).reverse()
+        activeSorterType === 'ascend'
+          ? [...data].sort(sorter)
+          : [...data].sort(sorter).reverse()
     }
   }
   // ************* 处理求和、平均数
@@ -102,7 +105,10 @@ const BodyTable = props => {
     <div
       style={{
         maxHeight: maxHeight || 'auto',
-        overflowY: tableRef.current && tableRef.current.clientHeight > maxHeight ? 'scroll' : null, // maxHeight 小于 table 实际高度才处滚动条
+        overflowY:
+          tableRef.current && tableRef.current.clientHeight > maxHeight
+            ? 'scroll'
+            : null, // maxHeight 小于 table 实际高度才处滚动条
         overflowX:
           (bodyTableRef.current && bodyTableRef.current.clientWidth) <
           (tableRef.current && tableRef.current.clientWidth)
@@ -116,9 +122,15 @@ const BodyTable = props => {
         syncScrollTop(bodyTableRef.current.scrollTop, fixedBodyTableRef.current)
       }}
     >
-      <table ref={tableRef} style={{ borderLeft: bordered ? '1px solid #e7e7e7' : 'none' }}>
+      <table
+        ref={tableRef}
+        style={{
+          borderLeft: bordered ? '1px solid #e7e7e7' : 'none',
+          width: scrollWidth || '100%'
+        }}
+      >
         <colgroup>
-          {columnsgroup.map((c, index) =>
+          {columnsgroup.map((c, index) => (
             <col
               key={index}
               style={{
@@ -128,12 +140,14 @@ const BodyTable = props => {
                 // minWidth: c.width
               }}
             />
-          )}
+          ))}
         </colgroup>
         <tbody>
           {_data && _data.map((row, index) => renderRow(row, 1, index))}
-          {hasSumColumn && renderRow(sumRow, 1, data.length, { isSumRow: true })}
-          {hasAvgColumn && renderRow(avgRow, 1, data.length + 1, { isAvgRow: true })}
+          {hasSumColumn &&
+            renderRow(sumRow, 1, data.length, { isSumRow: true })}
+          {hasAvgColumn &&
+            renderRow(avgRow, 1, data.length + 1, { isAvgRow: true })}
         </tbody>
       </table>
     </div>
