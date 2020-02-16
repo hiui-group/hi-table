@@ -16,7 +16,8 @@ const Row = ({
   isSumRow, // 是否为合计行
   isAvgRow, // 是否为平均行
   index,
-  innerRef
+  innerRef,
+  rowHeight
 }) => {
   const [expanded, setExpanded] = useState(false)
   let {
@@ -42,6 +43,7 @@ const Row = ({
   }
   return [
     <tr
+      style={isFixed && rowHeight ? { height: rowHeight } : {}}
       ref={innerRef}
       className={classNames(`${prefix}__row`, {
         [`${prefix}__row--error`]: errorRowKeys.includes(rowData.key),
@@ -61,7 +63,7 @@ const Row = ({
       onMouseEnter={e => setHoverRow(rowData.key)}
       onMouseLeave={e => setHoverRow(null)}
     >
-      {rowSelection &&
+      {rowSelection && (
         <td>
           <Checkbox
             checked={rowSelection.selectedRowKeys.includes(rowData.key)}
@@ -76,8 +78,9 @@ const Row = ({
               }
             }}
           />
-        </td>}
-      {expandedRender &&
+        </td>
+      )}
+      {expandedRender && (
         <td>
           <Icon
             style={{ cursor: 'pointer' }}
@@ -86,9 +89,10 @@ const Row = ({
               setExpanded(!expanded)
             }}
           />
-        </td>}
+        </td>
+      )}
 
-      {rowColumns.map((column, idx) =>
+      {rowColumns.map((column, idx) => (
         <Cell
           key={idx}
           column={column}
@@ -100,19 +104,23 @@ const Row = ({
           expandedTreeRows={expandedTreeRows}
           setExpandedTreeRows={setExpandedTreeRows}
         />
-      )}
+      ))}
     </tr>,
     // 可展开的内嵌部分
-    expandedRender &&
-      expanded &&
-      <tr key='expanded-row' className={`${prefix}--expanded`} style={{background: 'rgba(251,251,251,1)'}}>
+    expandedRender && expanded && (
+      <tr
+        key='expanded-row'
+        className={`${prefix}--expanded`}
+        style={{ background: 'rgba(251,251,251,1)' }}
+      >
         {/* 多选占位 */}
         {rowSelection && <td />}
         {/* 可展开内嵌显示 */}
-        <td colSpan={columns.length + 1} style={{color: '#666666'}}>
+        <td colSpan={columns.length + 1} style={{ color: '#666666' }}>
           {expandedRender()}
         </td>
       </tr>
+    )
   ]
 }
 

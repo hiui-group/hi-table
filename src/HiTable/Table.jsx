@@ -25,6 +25,7 @@ const Table = props => {
   const [freezeColumn, setFreezeColumn] = useState(null)
   const [hoverRow, setHoverRow] = useState(null)
   const [serverTableConfig, setServerTableConfig] = useState({})
+  const [eachRowHeight, setEachRowHeight] = useState([])
 
   const {
     striped,
@@ -212,7 +213,10 @@ const Table = props => {
         setVisibleCols,
         setCacheVisibleCols,
         // 出现横向滚动条时的宽度
-        scrollWidth
+        scrollWidth,
+        // 同步行高度
+        eachRowHeight,
+        setEachRowHeight
       }}
     >
       <div

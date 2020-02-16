@@ -17,20 +17,22 @@ const FixedBodyTable = props => {
     activeSorterColumn,
     activeSorterType,
     realColumnsWidth,
-    bordered
+    bordered,
+    eachRowHeight
   } = useContext(TableContext)
   let _columns = _.cloneDeep(fixedColumns)
   let depthArray = []
   setDepth(_columns, 0, depthArray)
   const columnsgroup = flatTreeData(_columns).filter(col => col.isLast)
   const bodyInner = useRef(null)
-  const renderRow = (row, level) => {
+  const renderRow = (row, level, index) => {
     return (
       <React.Fragment key={row.key}>
         <Row
           rowData={row}
           isFixed
           level={level}
+          rowHeight={eachRowHeight[index]}
           expandedTree={expandedTreeRows.includes(row.key)}
           expandedTreeRows={expandedTreeRows}
           setExpandedTreeRows={setExpandedTreeRows}
@@ -70,7 +72,8 @@ const FixedBodyTable = props => {
         marginBottom: -scrollBarSize,
         overflow: 'hidden',
         width:
-          bodyTableRef.current && fixedColumnsWidth > bodyTableRef.current.clientWidth
+          bodyTableRef.current &&
+          fixedColumnsWidth > bodyTableRef.current.clientWidth
             ? bodyTableRef.current.clientWidth
             : fixedColumnsWidth + 1
       }}
@@ -79,7 +82,8 @@ const FixedBodyTable = props => {
         style={{
           maxHeight: maxHeight || 'auto',
           width:
-            bodyTableRef.current && fixedColumnsWidth > bodyTableRef.current.clientWidth
+            bodyTableRef.current &&
+            fixedColumnsWidth > bodyTableRef.current.clientWidth
               ? bodyTableRef.current.clientWidth
               : fixedColumnsWidth + 20,
 
@@ -89,15 +93,21 @@ const FixedBodyTable = props => {
         }}
         ref={fixedBodyTableRef}
         onScroll={e => {
-          syncScrollTop(fixedBodyTableRef.current.scrollTop, bodyTableRef.current)
+          syncScrollTop(
+            fixedBodyTableRef.current.scrollTop,
+            bodyTableRef.current
+          )
         }}
       >
         <table
-          style={{ width: 'auto', borderLeft: bordered ? '1px solid #e7e7e7' : 'none' }}
+          style={{
+            width: 'auto',
+            borderLeft: bordered ? '1px solid #e7e7e7' : 'none'
+          }}
           ref={bodyInner}
         >
           <colgroup>
-            {columnsgroup.map((c, idx) =>
+            {columnsgroup.map((c, idx) => (
               <col
                 key={idx}
                 style={{
@@ -105,10 +115,10 @@ const FixedBodyTable = props => {
                   minWidth: realColumnsWidth[idx]
                 }}
               />
-            )}
+            ))}
           </colgroup>
           <tbody>
-            {_fixedData.map((row, index) => renderRow(row, 1))}
+            {_fixedData.map((row, index) => renderRow(row, 1, index))}
           </tbody>
         </table>
       </div>

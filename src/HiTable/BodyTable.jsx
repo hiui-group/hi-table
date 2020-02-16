@@ -3,6 +3,7 @@ import Row from './Row'
 import TableContext from './context'
 import _ from 'lodash'
 import { flatTreeData, setDepth } from './util'
+import { useEffect } from 'react'
 
 const BodyTable = props => {
   const [expandedTreeRows, setExpandedTreeRows] = useState([])
@@ -22,7 +23,8 @@ const BodyTable = props => {
     firstRowRef,
     realColumnsWidth,
     resizable,
-    scrollWidth
+    scrollWidth,
+    setEachRowHeight
   } = useContext(TableContext)
   // **************** 获取colgroup
   let _columns = _.cloneDeep(columns)
@@ -76,7 +78,14 @@ const BodyTable = props => {
       avgRow[c.dataKey] = _.sumBy(_data, d => d[c.dataKey]) / _data.length
     }
   })
-
+  useEffect(() => {
+    if (tableRef.current && tableRef.current.children[1].children) {
+      let rowHeightArray = Array.from(
+        tableRef.current.children[1].children
+      ).map(tr => tr.clientHeight)
+      setEachRowHeight(rowHeightArray)
+    }
+  }, [data])
   const renderRow = (row, level, index, rowConfig = {}) => {
     return (
       <React.Fragment key={index}>

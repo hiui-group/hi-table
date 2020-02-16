@@ -21,12 +21,22 @@ const columns = [
   { key: 'priceSegment', dataKey: 'priceSegment', title: '价格段', width: 150 },
   { key: 'stBrand', dataKey: 'stBrand', title: '品牌', width: 150 },
   { key: 'stModel', dataKey: 'stModel', title: '机型', width: 150 },
-  { key: 'stMemory', dataKey: 'stMemory', title: '配置', width: 350 },
-
+  { key: 'stMemory', dataKey: 'stMemory', title: '配置', width: 150 },
+  { key: 'dt', dataKey: 'dt', title: '时间', width: 150 },
+  { key: 'skuCnt', dataKey: 'skuCnt', title: '数量', width: 150 },
+  { key: 'cartPrice', dataKey: 'cartPrice', title: '官方指导价', width: 150 },
   {
     key: 'receptionPrice',
     dataKey: 'receptionPrice',
-    title: '到手价'
+    title: '到手价',
+    width: 150
+  },
+  { key: 'benifitInfo', dataKey: 'benifitInfo', title: '利益点' },
+  {
+    key: 'id',
+    dataKey: 'id',
+    title: '截图',
+    width: 100
   }
 ]
 
@@ -258,8 +268,6 @@ const FixedTable = () => {
         // size='small'
         columns={columns}
         data={data}
-        scrollWidth={1500}
-        standard
         fixedToColumn={'storeName'}
       />
     </div>
