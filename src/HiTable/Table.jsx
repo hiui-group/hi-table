@@ -285,6 +285,11 @@ const TableWrapper = ({ columns, uniqueId, standard, ...settingProps }) => {
       JSON.stringify(cacheVisibleCols)
     )
   }, [sortCol, visibleCols, cacheVisibleCols])
+
+  useEffect(() => {
+    setCacheVisibleCols(_cacheVisibleCols)
+  }, [_cacheVisibleCols])
+
   const standardPreset = standard
     ? {
       showColMenu: true,
@@ -294,6 +299,7 @@ const TableWrapper = ({ columns, uniqueId, standard, ...settingProps }) => {
       striped: true
     }
     : {}
+
   // ***************
   return (
     <Table
