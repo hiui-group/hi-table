@@ -1,9 +1,8 @@
-import React, { useState, useContext, useRef } from 'react'
+import React, { useState, useContext, useRef, useEffect } from 'react'
 import Row from './Row'
 import TableContext from './context'
 import _ from 'lodash'
 import { flatTreeData, setDepth } from './util'
-import { useEffect } from 'react'
 
 const BodyTable = props => {
   const [expandedTreeRows, setExpandedTreeRows] = useState([])
@@ -88,7 +87,7 @@ const BodyTable = props => {
   }, [data])
   const renderRow = (row, level, index, rowConfig = {}) => {
     return (
-      <React.Fragment key={index}>
+      <React.Fragment key={row.key}>
         <Row
           innerRef={index === 0 ? firstRowRef : null}
           key={row.key}
@@ -109,7 +108,6 @@ const BodyTable = props => {
       </React.Fragment>
     )
   }
-
   return (
     <div
       style={{
