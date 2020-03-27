@@ -85,7 +85,21 @@ const BodyTable = props => {
       setEachRowHeight(rowHeightArray)
     }
   }, [data])
-  const renderRow = (row, level, index, rowConfig = {}) => {
+
+  let hasTree = false
+  if (_data && _data.length) {
+    hasTree = _data.some(row => {
+      return row.children && row.children.length
+    })
+  }
+
+  const renderRow = (row, level, index, rowConfig = {}, isTree) => {
+    let childrenHasTree = false
+    if (row.children && row.children.length) {
+      childrenHasTree = row.children.some(
+        child => child.children && child.children.length
+      )
+    }
     return (
       <React.Fragment key={row.key}>
         <Row
@@ -99,11 +113,18 @@ const BodyTable = props => {
           setExpandedTreeRows={setExpandedTreeRows}
           isAvgRow={rowConfig.isAvgRow}
           isSumRow={rowConfig.isSumRow}
+          isTree={isTree}
         />
         {row.children &&
           expandedTreeRows.includes(row.key) &&
           row.children.map(child => {
-            return renderRow(child, level + 1, index)
+            return renderRow(
+              child,
+              level + 1,
+              index,
+              _,
+              childrenHasTree || isTree
+            )
           })}
       </React.Fragment>
     )
@@ -150,7 +171,8 @@ const BodyTable = props => {
           ))}
         </colgroup>
         <tbody>
-          {_data && _data.map((row, index) => renderRow(row, 1, index))}
+          {_data &&
+            _data.map((row, index) => renderRow(row, 1, index, _, hasTree))}
           {hasSumColumn &&
             renderRow(sumRow, 1, data.length, { isSumRow: true })}
           {hasAvgColumn &&

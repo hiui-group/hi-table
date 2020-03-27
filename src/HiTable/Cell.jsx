@@ -12,7 +12,8 @@ const Cell = ({
   expandedTree,
   expandedTreeRows,
   setExpandedTreeRows,
-  rowIndex
+  rowIndex,
+  isTree
 }) => {
   const {
     highlightedColKeys,
@@ -20,7 +21,6 @@ const Cell = ({
     alignRightColumns,
     prefix
   } = useContext(TableContext)
-  console.log('Level', rowData, level)
   // 处理自定义 render 或者合并单元格情况
   let cellContent = column.render
     ? column.render(rowData[column.dataKey], rowData, rowIndex)
@@ -69,10 +69,12 @@ const Cell = ({
             }}
           />
         ) : (
-          <span
-            style={{ width: 18, display: 'inline-block' }}
-            key={Math.random()}
-          />
+          isTree && (
+            <span
+              style={{ width: 18, display: 'inline-block' }}
+              key={Math.random()}
+            />
+          )
         ))}
 
       {(isMergeCell && cellContent.children) || cellContent}

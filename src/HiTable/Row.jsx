@@ -17,7 +17,8 @@ const Row = ({
   isAvgRow, // 是否为平均行
   index,
   innerRef,
-  rowHeight
+  rowHeight,
+  isTree
 }) => {
   const [expanded, setExpanded] = useState(false)
   let {
@@ -81,7 +82,7 @@ const Row = ({
         </td>
       )}
       {expandedRender && (
-        <td>
+        <td style={{ width: 50 }}>
           <Icon
             style={{ cursor: 'pointer' }}
             name={expanded ? 'down' : 'right'}
@@ -100,6 +101,7 @@ const Row = ({
           level={level}
           columnIndex={idx}
           rowIndex={index}
+          isTree={isTree}
           expandedTree={expandedTree}
           expandedTreeRows={expandedTreeRows}
           setExpandedTreeRows={setExpandedTreeRows}
@@ -117,7 +119,7 @@ const Row = ({
         {rowSelection && <td />}
         {/* 可展开内嵌显示 */}
         <td colSpan={columns.length + 1} style={{ color: '#666666' }}>
-          {expandedRender()}
+          {expandedRender(rowData, index)}
         </td>
       </tr>
     )

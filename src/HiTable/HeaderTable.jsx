@@ -141,7 +141,8 @@ const HeaderTable = ({ isFixed, bodyWidth }) => {
                 key='expandedButton'
                 rowSpan={groupedColumns.length}
                 style={{
-                  boxSizing: 'border-box'
+                  boxSizing: 'border-box',
+                  width: 50
                 }}
               >
                 <span />

@@ -10,7 +10,7 @@ yarn add @hi-ui/hi-table
 
 ```jsx
 import Table from '@hi-ui/hi-table'
-render( <Table columns={columns} data={data} />, document.getElementById('app'))
+render(<Table columns={columns} data={data} />, document.getElementById('app'))
 ```
 
 ## demo 演示
@@ -234,9 +234,7 @@ let data = [
 ]
 
 const AlignTable = () => {
-  return (
-    <Table columns={columns} data={data} />
-  )
+  return <Table columns={columns} data={data} />
 }
 
 export default AlignTable
@@ -327,9 +325,7 @@ let data = [
 ]
 
 const ZebraTable = () => {
-  return (
-    <Table columns={columns} data={data} striped />
-  )
+  return <Table columns={columns} data={data} striped />
 }
 
 export default ZebraTable
@@ -420,9 +416,7 @@ let data = [
   }
 ]
 const RowErrorTable = () => {
-  return (
-    <Table columns={columns} data={data} errorRowKeys={[1]} />
-  )
+  return <Table columns={columns} data={data} errorRowKeys={[1]} />
 }
 
 export default RowErrorTable
@@ -517,15 +511,15 @@ const RowSelectionTable = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([])
   return (
     <Table
-        columns={columns}
-        data={data}
-        rowSelection={{
-          selectedRowKeys: selectedRowKeys,
-          onChange: selectedRowKeys => {
-            setSelectedRowKeys(selectedRowKeys)
-          }
-        }}
-      />
+      columns={columns}
+      data={data}
+      rowSelection={{
+        selectedRowKeys: selectedRowKeys,
+        onChange: selectedRowKeys => {
+          setSelectedRowKeys(selectedRowKeys)
+        }
+      }}
+    />
   )
 }
 
@@ -617,9 +611,7 @@ let data = [
   }
 ]
 const RowErrorTable = () => {
-  return (
-    <Table columns={columns} data={data} highlightedRowKeys={[1]} />
-  )
+  return <Table columns={columns} data={data} highlightedRowKeys={[1]} />
 }
 
 export default RowErrorTable
@@ -639,7 +631,7 @@ let columns = [
   {
     title: 'Home phone',
     colSpan: 2,
-    dataKey: 'tel',
+    dataKey: 'tel'
   },
   {
     title: 'Phone',
@@ -701,7 +693,7 @@ class App extends React.Component {
   state = {
     data: datas
   }
-  render () {
+  render() {
     return (
       <Table columns={columns} data={this.state.data} errorRows={['4', '5']} />
     )
@@ -710,6 +702,7 @@ class App extends React.Component {
 
 export default App
 ```
+
 ### 列高亮
 
 ![列高亮](./src/demo/img/col-highlight.png)
@@ -795,13 +788,10 @@ let data = [
   }
 ]
 const RowHighlightedTable = () => {
-  return (
-    <Table columns={columns} data={data} highlightedColKeys={['name']} />
-  )
+  return <Table columns={columns} data={data} highlightedColKeys={['name']} />
 }
 
 export default RowHighlightedTable
-
 ```
 
 ### 带边框
@@ -897,7 +887,6 @@ export default BorderedTable
 
 ### 不同尺寸的表格
 
-
 通过设置 `size` 来使表格按照不同尺寸进行展示
 
 ```js
@@ -978,15 +967,15 @@ let data = [
 ]
 
 export default function() {
-  return (
-     <Table columns={columns} data={data} size='large' />
-  )
+  return <Table columns={columns} data={data} size='large' />
 }
 ```
+
 ### 列操作
+
 ![列操作](./src/demo/img/col-opt.jpg)
 
-通过配置 `showColMenu` 来开启列操作功能，默认自带列高亮和列冻结功能，当在 `columns` 中的列配置了 `sorter`  函数，列操作将会具备排序功能
+通过配置 `showColMenu` 来开启列操作功能，默认自带列高亮和列冻结功能，当在 `columns` 中的列配置了 `sorter` 函数，列操作将会具备排序功能
 
 ```js
 import Table from '../HiTable'
@@ -1002,7 +991,7 @@ let columns = [
     title: 'Age',
     dataKey: 'age',
     key: 2,
-    sorter (pre, next) {
+    sorter(pre, next) {
       return pre.age - next.age
     }
   },
@@ -1016,7 +1005,7 @@ let columns = [
     title: 'Phone',
     dataKey: 'phone',
     key: 4,
-    sorter (pre, next) {
+    sorter(pre, next) {
       return pre.phone - next.phone
     }
   },
@@ -1070,12 +1059,11 @@ let data = [
   }
 ]
 
-export default function () {
-  return (
-    <Table columns={columns} data={data} showColMenu />
-  )
+export default function() {
+  return <Table columns={columns} data={data} showColMenu />
 }
 ```
+
 ### 带分页
 
 ![带分页](./src/demo/img/pagination.jpg)
@@ -1100,7 +1088,7 @@ for (let i = 0; i < 100; i++) {
 }
 
 class Demo extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.columns = [
       { title: 'Full Name', width: 100, dataKey: 'name', key: 'name' },
@@ -1117,11 +1105,11 @@ class Demo extends React.Component {
     }
   }
 
-  get total2 () {
+  get total2() {
     return this.state.data.length
   }
 
-  getData (current, pageSize) {
+  getData(current, pageSize) {
     let res = []
     let start = this.state.pageSize * (current - 1)
     let end = this.state.pageSize * current
@@ -1132,39 +1120,39 @@ class Demo extends React.Component {
     return res
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.setState({
       data: this.getData(2),
       current: 2
     })
   }
 
-  set (current) {
+  set(current) {
     this.setState({ data: this.getData(current), current })
   }
 
-  render () {
+  render() {
     return (
       <Table
-          columns={this.columns}
-          data={this.state.data}
-          pagination={{
-            pageSize: this.state.pageSize,
-            total: data.length,
-            current: this.state.current,
-            onChange: (page, pre, size) => {
-              console.log(page, pre, size)
-              this.set(page)
-            }
-          }}
-        />
+        columns={this.columns}
+        data={this.state.data}
+        pagination={{
+          pageSize: this.state.pageSize,
+          total: data.length,
+          current: this.state.current,
+          onChange: (page, pre, size) => {
+            console.log(page, pre, size)
+            this.set(page)
+          }
+        }}
+      />
     )
   }
 }
 
 export default Demo
-
 ```
+
 ### 表格吸顶
 
 ![表头吸顶](./src/demo/img/sticky.jpg)
@@ -1185,7 +1173,7 @@ let columns = [
     title: 'Age',
     dataKey: 'age',
     key: 2,
-    sorter (pre, next) {
+    sorter(pre, next) {
       return pre.age - next.age
     }
   },
@@ -1221,12 +1209,11 @@ for (let i = 0; i < 20; i++) {
   })
 }
 
-export default function () {
-  return (
-    <Table columns={columns} data={data} sticky />
-  )
+export default function() {
+  return <Table columns={columns} data={data} sticky />
 }
 ```
+
 ### 树形表格
 
 ![树形表格](./src/demo/img/tree.jpg)
@@ -1258,8 +1245,20 @@ const TreeTable = () => {
                   d: 'd-1-1',
                   key: '1-1',
                   children: [
-                    { a: 'a-1-1-1', b: 'b-1-1-1', c: 'c-1-1-1', d: 'd-1-1-1', key: '1-1-1' },
-                    { a: 'a-1-1-2', b: 'b-1-1-2', c: 'c-1-1-2', d: 'd-1-1-2', key: '1-1-2' }
+                    {
+                      a: 'a-1-1-1',
+                      b: 'b-1-1-1',
+                      c: 'c-1-1-1',
+                      d: 'd-1-1-1',
+                      key: '1-1-1'
+                    },
+                    {
+                      a: 'a-1-1-2',
+                      b: 'b-1-1-2',
+                      c: 'c-1-1-2',
+                      d: 'd-1-1-2',
+                      key: '1-1-2'
+                    }
                   ]
                 },
                 { a: 'a-1-2', b: 'b-1-2', c: 'c-1-2', d: 'd-1-2', key: '1-2' }
@@ -1283,6 +1282,7 @@ const TreeTable = () => {
 
 export default TreeTable
 ```
+
 ### 合并单元格
 
 ![合并单元格](./src/demo/img/merge-cell.jpg)
@@ -1380,9 +1380,7 @@ let data = [
 ]
 
 const MergeCellTable = () => {
-  return (
-    <Table columns={columns} data={data} />
-  )
+  return <Table columns={columns} data={data} />
 }
 export default MergeCellTable
 ```
@@ -1487,14 +1485,12 @@ let data = [
 ]
 
 const FixedHeaderTable = () => {
-  return (
-    <Table columns={columns} data={data} maxHeight={200} showColMenu />
-  )
+  return <Table columns={columns} data={data} maxHeight={200} showColMenu />
 }
 
 export default FixedHeaderTable
-
 ```
+
 ### 列冻结
 
 ![列冻结](./src/demo/img/fixed-col.png)
@@ -1596,17 +1592,23 @@ let data = [
 
 const FixedTable = () => {
   return (
-    <Table columns={columns} data={data} maxHeight={200} fixedToColumn={'age'} />
+    <Table
+      columns={columns}
+      data={data}
+      maxHeight={200}
+      fixedToColumn={'age'}
+    />
   )
 }
 
 export default FixedTable
-
 ```
+
 ### 表头分组
 
 ![表头分组](./src/demo/img/multi-header.jpg)
 通过设置 `columns` 中每列的 `children` 来表示表头间的层级关系
+
 ```js
 import React from 'react'
 import Table from '../HiTable'
@@ -1691,12 +1693,11 @@ for (let i = 0; i < 6; i++) {
   })
 }
 
-export default function MultiHeaderTable () {
-  return (
-    <Table columns={columns} data={data} />
-  )
+export default function MultiHeaderTable() {
+  return <Table columns={columns} data={data} />
 }
 ```
+
 ### 内嵌式
 
 ![内嵌式](./src/demo/img/inner.jpg)
@@ -1785,15 +1786,20 @@ const RowExpandedTable = () => {
   return (
     <div style={{ width: 1100, margin: '0 auto' }}>
       <h2>内嵌式</h2>
-      <Table columns={columns} data={data} expandedRender={() => {
-        return <div>123</div>
-      }} />
+      <Table
+        columns={columns}
+        data={data}
+        expandedRender={() => {
+          return <div>123</div>
+        }}
+      />
     </div>
   )
 }
 
 export default RowExpandedTable
 ```
+
 ### 动态调整列宽
 
 通过设置 `resizable` 使列可以动态调整宽度
@@ -1824,7 +1830,7 @@ let columns = [
     title: '单价',
     dataKey: 'price',
     width: 300,
-    sorter (pre, next) {
+    sorter(pre, next) {
       return pre.price - next.price
     }
   },
@@ -1907,7 +1913,6 @@ export default DynamicTable
 import Table from '../HiTable'
 import React from 'react'
 
-
 let columns = [
   {
     title: '商品名',
@@ -1928,7 +1933,7 @@ let columns = [
     title: '单价',
     dataKey: 'price',
     width: 300,
-    sorter (pre, next) {
+    sorter(pre, next) {
       return pre.price - next.price
     }
   },
@@ -1996,7 +2001,6 @@ const SettingTable = () => {
   return (
     <div style={{ width: 1100, margin: '0 auto' }}>
       <Table uniqueId='666' columns={columns} data={data} setting />
-
     </div>
   )
 }
@@ -2032,7 +2036,7 @@ let columns = [
     title: '单价',
     dataKey: 'price',
     width: 300,
-    sorter (pre, next) {
+    sorter(pre, next) {
       return pre.price - next.price
     }
   },
@@ -2100,84 +2104,80 @@ const StandardTable = () => {
   return (
     <div style={{ width: 1100, margin: '0 auto' }}>
       <Table columns={columns} data={data} standard />
-
     </div>
   )
 }
 
 export default StandardTable
-
 ```
-
 
 ## API
 
 ### Props
 
-| 属性名             | 描述                                     | 类型                      | 可选值        | 默认值                      |
-| ----------------- | --------------------------------------- | ---------------------------------|--- | --------------------------- |
-| data              | 表格数据                                  | object[]           | - | -                  |
-| columns           | 表格列配置信息                             | ColumnItem[]                          | - | -                           |
-| bordered          | 是否显示边框（表头分组模式下，表格自带边框）    | boolean                        | true \| false | false                           |
-| sticky            | 是否支持表头吸顶                            | boolean                        | true \| false | false                           |
-| highlightedColKeys | 高亮列（受控）                             | string[]                        | - | []                          |
-| expandedRender    | 表格展开项                                 | () => ReactNode                        | - | -                           |
-| maxHeight         | 表格最大高度，当穿过该高度时，展示滚动条且表头固定  | number | - | -            |
-| fixedToColumn     | 表格左冻结至某一列                           | string                | - | null |
-| size              | 配置表格尺寸                                | string        | 'large' \| 'default' \| 'small' \| 'mini' | 'default'              |
-| pagination        | 表格分页配置项                              | Pagination                            | -  | null                          |
-| errorRowKeys      | 错误列（受控）                              | string[]                            | - | []                           |
-| highlightedRowKeys | 高亮行（受控）                             | string[]                       | -  | []                           |
-| rowSelection      | 行可选（受控）                              | RowSelection                       | -  | null                           |
-| dataSource        | 异步数据源                                 | (current: number) => DataSource                       | -  | null                           |
-| showColMenu       | 是否支持列操作                              | boolean                       | -  | false                           |
-| striped           | 是否展示为斑马纹效果                         | boolean                       | -  | false                           |
-| setting           | 是否集成控制面板功能                         | boolean                       | -  | false                           |
-| resizable | 是否能够动态控制列宽                         | boolean                       | true \| false  | false                           |
-| standard | 标准模式，默认集成 `showColMenu = true, sticky = true, bordered = true, setting = true, striped = true`                         | boolean                       | true \| false  | false                           |
+| 属性名             | 描述                                                                                                    | 类型                                           | 可选值                                    | 默认值    |
+| ------------------ | ------------------------------------------------------------------------------------------------------- | ---------------------------------------------- | ----------------------------------------- | --------- |
+| data               | 表格数据                                                                                                | object[]                                       | -                                         | -         |
+| columns            | 表格列配置信息                                                                                          | ColumnItem[]                                   | -                                         | -         |
+| bordered           | 是否显示边框（表头分组模式下，表格自带边框）                                                            | boolean                                        | true \| false                             | false     |
+| sticky             | 是否支持表头吸顶                                                                                        | boolean                                        | true \| false                             | false     |
+| highlightedColKeys | 高亮列（受控）                                                                                          | string[]                                       | -                                         | []        |
+| expandedRender     | 表格展开项                                                                                              | (record: dataItem, index: number) => ReactNode | -                                         | -         |
+| maxHeight          | 表格最大高度，当穿过该高度时，展示滚动条且表头固定                                                      | number                                         | -                                         | -         |
+| fixedToColumn      | 表格左冻结至某一列                                                                                      | string                                         | -                                         | null      |
+| size               | 配置表格尺寸                                                                                            | string                                         | 'large' \| 'default' \| 'small' \| 'mini' | 'default' |
+| pagination         | 表格分页配置项                                                                                          | Pagination                                     | -                                         | null      |
+| errorRowKeys       | 错误列（受控）                                                                                          | string[]                                       | -                                         | []        |
+| highlightedRowKeys | 高亮行（受控）                                                                                          | string[]                                       | -                                         | []        |
+| rowSelection       | 行可选（受控）                                                                                          | RowSelection                                   | -                                         | null      |
+| dataSource         | 异步数据源                                                                                              | (current: number) => DataSource                | -                                         | null      |
+| showColMenu        | 是否支持列操作                                                                                          | boolean                                        | -                                         | false     |
+| striped            | 是否展示为斑马纹效果                                                                                    | boolean                                        | -                                         | false     |
+| setting            | 是否集成控制面板功能                                                                                    | boolean                                        | -                                         | false     |
+| resizable          | 是否能够动态控制列宽                                                                                    | boolean                                        | true \| false                             | false     |
+| standard           | 标准模式，默认集成 `showColMenu = true, sticky = true, bordered = true, setting = true, striped = true` | boolean                                        | true \| false                             | false     |
 
 ### Type: ColumnItem
 
-| 参数     | 说明            | 类型             | 可选值 | 默认值 |
-| -------- | --------------- | ---------------- | ------ | ------ |
-| title    | 列标题    | string           | -      | -      |
-| dataKey       | 列对应数据项的唯一标识 | string \| number | -      | -      |
-| align | 列对齐方式        | string           | 'left' \| 'right'      | 'left'      |
-| sorter | 列排序函数        |() => boolean           | -      | null     |
-| avg | 该列是否支持平均值        | boolean           | -      | false     |
-| total | 该列是否支持合计        | boolean           | -      | false     |
-| width | 该列宽度        | number           | -      | -     |
-| children | 多级表头        | ColumnItem[]           | -      | -     |
-| render | 控制单元格自定义渲染        | (text: DataItem[ColumnItem[dataKey]], row: DataItem, index: number) => ReactNode           | -      | -     |
+| 参数     | 说明                   | 类型                                                                             | 可选值            | 默认值 |
+| -------- | ---------------------- | -------------------------------------------------------------------------------- | ----------------- | ------ |
+| title    | 列标题                 | string                                                                           | -                 | -      |
+| dataKey  | 列对应数据项的唯一标识 | string \| number                                                                 | -                 | -      |
+| align    | 列对齐方式             | string                                                                           | 'left' \| 'right' | 'left' |
+| sorter   | 列排序函数             | () => boolean                                                                    | -                 | null   |
+| avg      | 该列是否支持平均值     | boolean                                                                          | -                 | false  |
+| total    | 该列是否支持合计       | boolean                                                                          | -                 | false  |
+| width    | 该列宽度               | number                                                                           | -                 | -      |
+| children | 多级表头               | ColumnItem[]                                                                     | -                 | -      |
+| render   | 控制单元格自定义渲染   | (text: DataItem[ColumnItem[dataKey]], row: DataItem, index: number) => ReactNode | -                 | -      |
 
 ### Type: DataSource
 
 ### DataSource
 
-| 参数              | 说明                               | 类型                             | 可选值                                             | 默认值        |
-| ----------------- | ---------------------------------- | -------------------------------- | -------------------------------------------------- | ------------- |
-| url               | 请求的 url                         | string                           | -                                                  | -             |
-| type              | 请求方法                           | string                           | get \| post                                        | get           |
-| data              | post 请求时请求体参数              | object                           | -                                                  | -             |
-| params            | url 查询参数                       | object                           | -                                                  | -             |
-| headers           | 请求头                             | object                           | -                                                  | -             |
-| mode              | 请求模式                           | string                           | 'same-origin' \| 'cors' \| 'no-cors' \| 'navigate' | 'same-origin' |
+| 参数              | 说明                                      | 类型                              | 可选值                                             | 默认值        |
+| ----------------- | ----------------------------------------- | --------------------------------- | -------------------------------------------------- | ------------- |
+| url               | 请求的 url                                | string                            | -                                                  | -             |
+| type              | 请求方法                                  | string                            | get \| post                                        | get           |
+| data              | post 请求时请求体参数                     | object                            | -                                                  | -             |
+| params            | url 查询参数                              | object                            | -                                                  | -             |
+| headers           | 请求头                                    | object                            | -                                                  | -             |
+| mode              | 请求模式                                  | string                            | 'same-origin' \| 'cors' \| 'no-cors' \| 'navigate' | 'same-origin' |
 | transformResponse | 成功时的回调，需要返回注入 table 的配置项 | (response: object) => TableConfig | -                                                  | -             |
 
 ### Type: Pagination
 
-| 参数                                        | 说明                                                                                            | 类型                                                      | 可选值                            | 默认值    |
-| ------------------------------------------- | ----------------------------------------------------------------------------------------------- | --------------------------------------------------------- | --------------------------------- | --------- |
-| type   | 分页的类型                                                                                      | string                                                    | 'default' \| 'simple' \| 'shrink' | 'default' |
-| defaultCurrent                              | 默认的当前页数                                                                                  | number                                                    | -                                 | 1         |
-| current                                     | 当前页数                                                                                        | number                                                    | -                                 | -         |
-| max                                         | 最大显示的页数                                                                                  | number                                                    | -                                 | 2         |
-| pageSize                                    | 每页条数                                                                                        | number                                                    | -                                 | 10        |
-| pageSizeOptions                             | 指定每页可以显示多少条                                                                          | number[]                                                  | -                                 | []        |
-| total                                       | 数据总数                                                                                        | number                                                    | -                                 | -         |
-| autoHide                                    | 只有一页时是否隐藏分页器                                                                        | boolean                                                   | true \| false                     | false     |
-| showJumper                                  | 是否显示跳转                                                                                    | boolean                                                   | true \| false                     | false     |
-| onJump                                      | 快速跳转时触发，回调值为当前页数                                                                | (current: number) => void                                 | -                                 | -         |
-| onChange                                    | 页码改变时的回调，回调值为当前页数、之前的页数和每页条数                                        | (current: number, prev: number, pageSize: number) => void | -                                 | -         | - |
-| onPageSizeChange                            | 每页显示条数改变的回调函数，返回改变后的每页条数及当前页数                                      | (current: number, pageSize: number) => void               | -                                 | -         | - |
-
+| 参数             | 说明                                                       | 类型                                                      | 可选值                            | 默认值    |
+| ---------------- | ---------------------------------------------------------- | --------------------------------------------------------- | --------------------------------- | --------- |
+| type             | 分页的类型                                                 | string                                                    | 'default' \| 'simple' \| 'shrink' | 'default' |
+| defaultCurrent   | 默认的当前页数                                             | number                                                    | -                                 | 1         |
+| current          | 当前页数                                                   | number                                                    | -                                 | -         |
+| max              | 最大显示的页数                                             | number                                                    | -                                 | 2         |
+| pageSize         | 每页条数                                                   | number                                                    | -                                 | 10        |
+| pageSizeOptions  | 指定每页可以显示多少条                                     | number[]                                                  | -                                 | []        |
+| total            | 数据总数                                                   | number                                                    | -                                 | -         |
+| autoHide         | 只有一页时是否隐藏分页器                                   | boolean                                                   | true \| false                     | false     |
+| showJumper       | 是否显示跳转                                               | boolean                                                   | true \| false                     | false     |
+| onJump           | 快速跳转时触发，回调值为当前页数                           | (current: number) => void                                 | -                                 | -         |
+| onChange         | 页码改变时的回调，回调值为当前页数、之前的页数和每页条数   | (current: number, prev: number, pageSize: number) => void | -                                 | -         | - |
+| onPageSizeChange | 每页显示条数改变的回调函数，返回改变后的每页条数及当前页数 | (current: number, pageSize: number) => void               | -                                 | -         | - |
