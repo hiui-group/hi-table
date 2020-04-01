@@ -12,7 +12,6 @@ import { Pagination } from '@hi-ui/hiui'
 import axios from 'axios'
 import FixedBodyTable from './FixedBodyTable'
 import './style'
-import mockServerTableConfig from '../mock/server-table-config'
 
 const Table = props => {
   const hiTable = useRef(null)
@@ -152,10 +151,6 @@ const Table = props => {
       axios(fetchConfig)
         .then(res => {
           setServerTableConfig(res)
-        })
-        .catch(() => {
-          // 此处用于模拟服务端表格返回
-          setServerTableConfig(mockServerTableConfig)
         })
     }
   }, [_ceiling, dataSource])
