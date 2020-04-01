@@ -38,7 +38,7 @@ let data = [
     fdsUrl:
       'http://cnbj1-fds.api.xiaomi.net/pricemonitor/TMALL/2020021120/4176160609724@594387510987.png',
     goodsCategory: '手机',
-    id: 22,
+    key: 22,
     isFlagshipStore: '1',
     platformUrl:
       'https://detail.tmall.com/item.htm?id=594387510987&skuId=4176160609724',
@@ -60,7 +60,7 @@ let data = [
     fdsUrl:
       'http://cnbj1-fds.api.xiaomi.net/pricemonitor/TMALL/2020021120/4369944479551@594387510987.png',
     goodsCategory: '手机',
-    id: 39,
+    key: 39,
     isFlagshipStore: '1',
     platformUrl:
       'https://detail.tmall.com/item.htm?id=594387510987&skuId=4369944479551',
@@ -82,7 +82,7 @@ let data = [
     fdsUrl:
       'http://cnbj1-fds.api.xiaomi.net/pricemonitor/JD/2020021120/100003872923.png',
     goodsCategory: '手机',
-    id: 37,
+    key: 37,
     isFlagshipStore: '1',
     platformUrl: 'https://item.jd.com/100003872923.html',
     priceSegment: '1000-2000',
@@ -103,7 +103,7 @@ let data = [
     fdsUrl:
       'http://cnbj1-fds.api.xiaomi.net/pricemonitor/JD/2020021120/100009564076.png',
     goodsCategory: '手机',
-    id: 21,
+    key: 21,
     isFlagshipStore: '1',
     platformUrl: 'https://item.jd.com/100009564076.html',
     priceSegment: '3000-4000',
@@ -124,7 +124,7 @@ let data = [
     fdsUrl:
       'http://cnbj1-fds.api.xiaomi.net/pricemonitor/TMALL/2020021120/4259168580074@604775988717.png',
     goodsCategory: '手机',
-    id: 26,
+    key: 26,
     isFlagshipStore: '1',
     platformUrl:
       'https://detail.tmall.com/item.htm?id=604775988717&skuId=4259168580074',
@@ -146,7 +146,7 @@ let data = [
     fdsUrl:
       'http://cnbj1-fds.api.xiaomi.net/pricemonitor/TMALL/2020021120/4259168580078@604775988717.png',
     goodsCategory: '手机',
-    id: 28,
+    key: 28,
     isFlagshipStore: '1',
     platformUrl:
       'https://detail.tmall.com/item.htm?id=604775988717&skuId=4259168580078',
@@ -168,7 +168,7 @@ let data = [
     fdsUrl:
       'http://cnbj1-fds.api.xiaomi.net/pricemonitor/TMALL/2020021120/4160269812356@597269145005.png',
     goodsCategory: '手机',
-    id: 24,
+    key: 24,
     isFlagshipStore: '1',
     platformUrl:
       'https://detail.tmall.com/item.htm?id=597269145005&skuId=4160269812356',
@@ -191,7 +191,7 @@ let data = [
     fdsUrl:
       'http://cnbj1-fds.api.xiaomi.net/pricemonitor/JD/2020021120/7437712.png',
     goodsCategory: '手机',
-    id: 32,
+    key: 32,
     isFlagshipStore: '1',
     platformUrl: 'https://item.jd.com/7437712.html',
     priceSegment: '1000-2000',
@@ -212,7 +212,7 @@ let data = [
     fdsUrl:
       'http://cnbj1-fds.api.xiaomi.net/pricemonitor/JD/2020021112/100003884767.png',
     goodsCategory: '手机',
-    id: 38,
+    key: 38,
     isFlagshipStore: '1',
     platformUrl: 'https://item.jd.com/100003884767.html',
     priceSegment: '1000-2000',
@@ -233,7 +233,7 @@ let data = [
     fdsUrl:
       'http://cnbj1-fds.api.xiaomi.net/pricemonitor/JD/2020021103/100003582699.png',
     goodsCategory: '手机',
-    id: 29,
+    key: 29,
     isFlagshipStore: '1',
     platformUrl: 'https://item.jd.com/100003582699.html',
     priceSegment: '2000-3000',
