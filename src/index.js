@@ -28,35 +28,16 @@ import ServerTable from './demo/ServerTable'
 import CeilingTable from './demo/CeilingTable'
 import SumAvgTable from './demo/SumAvgTable'
 
-const App = () =>
+const App = () => (
   <div style={{ padding: 50 }}>
-    <StandardTable />
-    <NormalTable />
-    <AlignTable />
-    <ZebraTable />
-    <RowErrorTable />
-    <RowSelectionTable />
-    <RowHighlightedTable />
-    <SumAvgTable />
-    <ColHighlightedTable />
-    <BorderedTable />
-    <LargeTable />
-    <SmallTable />
-    <SortTable />
-    <PaginationTable />
-    <CeilingTable />
-    <TreeTable />
-    <MergeCellTable />
-    <FixedHeaderTable />
-    <FixedTable />
     <MultipleHeaderTable />
+    <NormalTable />
+    <RowSelectionTable />
     <ExpandedRowTable />
-    {
-      null && <div>
-
-        <ServerTable />
-
-      </div>}
+    <PaginationTable />
+    <ZebraTable />
+    <TreeTable />
   </div>
+)
 
 ReactDOM.render(<App />, document.getElementById('root'))

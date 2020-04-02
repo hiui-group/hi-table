@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import Header from './components/Header'
+import HeaderTable from './HeaderTable'
 import BodyTable from './BodyTable'
 import TableContext from './context'
 import classnames from 'classnames'
@@ -8,8 +8,9 @@ import {
   getScrollBarSize,
   flatTreeData
 } from './util'
-import Pagination from './components/Pagination'
+import { Pagination } from '@hi-ui/hiui'
 import axios from 'axios'
+import FixedBodyTable from './FixedBodyTable'
 import './style'
 
 const Table = props => {
@@ -147,9 +148,10 @@ const Table = props => {
     }
     if (dataSource) {
       const fetchConfig = dataSource(1)
-      axios(fetchConfig).then(res => {
-        setServerTableConfig(res)
-      })
+      axios(fetchConfig)
+        .then(res => {
+          setServerTableConfig(res)
+        })
     }
   }, [_ceiling, dataSource])
   return (
@@ -222,15 +224,90 @@ const Table = props => {
       >
         {/* Normal table 普通表格 */}
         <div className={`${prefix}__container`} ref={baseTable}>
-          <table>
-            <Header columns={columns} expandedRender={expandedRender} />
-            <BodyTable />
-          </table>
+          <HeaderTable bodyWidth={baseTableWidth} />
+          <BodyTable />
         </div>
-        <Pagination prefix={prefix} pagination={_pagination} />
+        {/* Fixed table 固定列表格 */}
+        {fixedColumn && realFixedColumns.length > 0 && (
+          <div
+            className={classnames(
+              `${prefix}__container`,
+              `${prefix}__container--fixed`
+            )}
+          >
+            <HeaderTable isFixed />
+            <FixedBodyTable />
+          </div>
+        )}
+        {/* Pagination 分页组件 */}
+        {_pagination && (
+          <div className={`${prefix}__pagination`}>
+            <Pagination {..._pagination} />
+          </div>
+        )}
       </div>
     </TableContext.Provider>
   )
 }
 
-export default Table
+const TableWrapper = ({ columns, uniqueId, standard, ...settingProps }) => {
+  const _sortCol =
+    uniqueId && window.localStorage.getItem(`${uniqueId}_sortCol`)
+      ? JSON.parse(window.localStorage.getItem(`${uniqueId}_sortCol`))
+      : columns
+
+  const _visibleCols =
+    uniqueId && window.localStorage.getItem(`${uniqueId}_visibleCols`)
+      ? JSON.parse(window.localStorage.getItem(`${uniqueId}_visibleCols`))
+      : columns
+
+  const _cacheVisibleCols =
+    uniqueId && window.localStorage.getItem(`${uniqueId}_cacheVisibleCols`)
+      ? JSON.parse(window.localStorage.getItem(`${uniqueId}_cacheVisibleCols`))
+      : columns
+  // 列操作逻辑
+  const [sortCol, setSortCol] = useState(_sortCol)
+  const [visibleCols, setVisibleCols] = useState(_visibleCols)
+  const [cacheVisibleCols, setCacheVisibleCols] = useState(_cacheVisibleCols)
+  useEffect(() => {
+    window.localStorage.setItem(`${uniqueId}_sortCol`, JSON.stringify(sortCol))
+    window.localStorage.setItem(
+      `${uniqueId}_visibleCols`,
+      JSON.stringify(visibleCols)
+    )
+    window.localStorage.setItem(
+      `${uniqueId}_cacheVisibleCols`,
+      JSON.stringify(cacheVisibleCols)
+    )
+  }, [sortCol, visibleCols, cacheVisibleCols])
+
+  useEffect(() => {
+    setCacheVisibleCols(_cacheVisibleCols)
+  }, [_cacheVisibleCols])
+
+  const standardPreset = standard
+    ? {
+      showColMenu: true,
+      sticky: true,
+      bordered: true,
+      setting: true,
+      striped: true
+    }
+    : {}
+
+  // ***************
+  return (
+    <Table
+      columns={cacheVisibleCols}
+      {...settingProps}
+      {...standardPreset}
+      sortCol={sortCol}
+      setSortCol={setSortCol}
+      visibleCols={visibleCols}
+      setVisibleCols={setVisibleCols}
+      setCacheVisibleCols={setCacheVisibleCols}
+    />
+  )
+}
+
+export default TableWrapper
