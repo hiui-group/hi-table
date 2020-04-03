@@ -38,9 +38,11 @@ export const getLeafChildren = (item, children = []) => {
 // 将树形数据按照层级分组
 export const groupDataByDepth = (data, depth = 1) => {
   const flattedData = flatTreeData(data)
-  let result = Array(depth).fill(undefined).map(item => {
-    return []
-  })
+  let result = Array(depth)
+    .fill(undefined)
+    .map(item => {
+      return []
+    })
 
   result.forEach((group, index) => {
     flattedData.forEach(d => {

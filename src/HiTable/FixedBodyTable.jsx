@@ -4,15 +4,18 @@ import TableContext from './context'
 import _ from 'lodash'
 import { flatTreeData, setDepth } from './util'
 
-const FixedBodyTable = props => {
+const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
   const [expandedTreeRows, setExpandedTreeRows] = useState([])
   const {
-    fixedData,
-    fixedColumns,
+    leftFixedData,
+    rightFixedData,
+    leftFixedColumns,
+    rightFixedColumns,
     maxHeight,
     scrollBarSize,
     syncScrollTop,
-    fixedBodyTableRef,
+    leftFixedBodyTableRef,
+    rightFixedBodyTableRef,
     bodyTableRef,
     activeSorterColumn,
     activeSorterType,
@@ -20,7 +23,13 @@ const FixedBodyTable = props => {
     bordered,
     eachRowHeight
   } = useContext(TableContext)
-  let _columns = _.cloneDeep(fixedColumns)
+  let _columns
+  if (isFixed === 'left') {
+    _columns = _.cloneDeep(leftFixedColumns)
+  }
+  if (isFixed === 'right') {
+    _columns = _.cloneDeep(rightFixedColumns)
+  }
   let depthArray = []
   setDepth(_columns, 0, depthArray)
   const columnsgroup = flatTreeData(_columns).filter(col => col.isLast)
@@ -30,7 +39,7 @@ const FixedBodyTable = props => {
       <React.Fragment key={row.key}>
         <Row
           rowData={row}
-          isFixed
+          isFixed={isFixed}
           level={level}
           rowHeight={eachRowHeight[index]}
           expandedTree={expandedTreeRows.includes(row.key)}
@@ -45,14 +54,26 @@ const FixedBodyTable = props => {
       </React.Fragment>
     )
   }
-  const fixedColumnsWidth = fixedColumns
-    .map((c, idx) => realColumnsWidth[idx])
-    .reduce((total, cur) => {
-      return total + cur
-    }, 0)
-
+  let fixedColumnsWidth
+  if (isFixed === 'left') {
+    fixedColumnsWidth = leftFixedColumns
+      .map((c, idx) => realColumnsWidth[idx])
+      .reduce((total, cur) => {
+        return total + cur
+      }, 0)
+  }
+  if (isFixed === 'right') {
+    fixedColumnsWidth = rightFixedColumns
+      .map((c, idx) => realColumnsWidth[idx + rightFixedIndex])
+      .reduce((total, cur) => {
+        return total + cur
+      }, 0)
+  }
+  const fixedBodyTableRef =
+    isFixed === 'left' ? leftFixedBodyTableRef : rightFixedBodyTableRef
   // **************** 根据排序列处理数据
-  let _fixedData = fixedData
+  let _fixedData = isFixed === 'left' ? leftFixedData : rightFixedData
+  let fixedColumns = isFixed === 'left' ? leftFixedColumns : rightFixedColumns
 
   if (activeSorterColumn) {
     let sorter =
@@ -97,6 +118,17 @@ const FixedBodyTable = props => {
             fixedBodyTableRef.current.scrollTop,
             bodyTableRef.current
           )
+          if (isFixed === 'left') {
+            syncScrollTop(
+              fixedBodyTableRef.current.scrollTop,
+              rightFixedBodyTableRef.current
+            )
+          } else {
+            syncScrollTop(
+              fixedBodyTableRef.current.scrollTop,
+              leftFixedBodyTableRef.current
+            )
+          }
         }}
       >
         <table
@@ -107,15 +139,23 @@ const FixedBodyTable = props => {
           ref={bodyInner}
         >
           <colgroup>
-            {columnsgroup.map((c, idx) => (
-              <col
-                key={idx}
-                style={{
-                  width: realColumnsWidth[idx],
-                  minWidth: realColumnsWidth[idx]
-                }}
-              />
-            ))}
+            {columnsgroup.map((c, idx) => {
+              return (
+                <col
+                  key={idx}
+                  style={{
+                    width:
+                      isFixed === 'left'
+                        ? realColumnsWidth[idx]
+                        : realColumnsWidth[idx + rightFixedIndex],
+                    minWidth:
+                      isFixed === 'left'
+                        ? realColumnsWidth[idx]
+                        : realColumnsWidth[idx + rightFixedIndex]
+                  }}
+                />
+              )
+            })}
           </colgroup>
           <tbody>
             {_fixedData.map((row, index) => renderRow(row, 1, index))}

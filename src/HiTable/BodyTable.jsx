@@ -16,7 +16,8 @@ const BodyTable = props => {
     headerTableRef,
     stickyHeaderRef,
     bodyTableRef,
-    fixedBodyTableRef,
+    leftFixedBodyTableRef,
+    rightFixedBodyTableRef,
     syncScrollLeft,
     syncScrollTop,
     firstRowRef,
@@ -147,7 +148,14 @@ const BodyTable = props => {
       onScroll={e => {
         syncScrollLeft(bodyTableRef.current.scrollLeft, headerTableRef.current)
         syncScrollLeft(bodyTableRef.current.scrollLeft, stickyHeaderRef.current)
-        syncScrollTop(bodyTableRef.current.scrollTop, fixedBodyTableRef.current)
+        syncScrollTop(
+          bodyTableRef.current.scrollTop,
+          leftFixedBodyTableRef.current
+        )
+        syncScrollTop(
+          bodyTableRef.current.scrollTop,
+          rightFixedBodyTableRef.current
+        )
       }}
     >
       <table
