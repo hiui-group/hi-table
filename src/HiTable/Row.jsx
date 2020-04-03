@@ -28,7 +28,8 @@ const Row = ({
     setHighlightRows,
     columns,
     expandedRender,
-    fixedColumns,
+    leftFixedColumns,
+    rightFixedColumns,
     hoverRow,
     setHoverRow,
     prefix
@@ -39,8 +40,11 @@ const Row = ({
   setDepth(_columns, 0, depthArray)
 
   let rowColumns = flatTreeData(_columns).filter(col => col.isLast)
-  if (isFixed) {
-    rowColumns = fixedColumns
+  if (isFixed === 'left') {
+    rowColumns = leftFixedColumns
+  }
+  if (isFixed === 'right') {
+    rowColumns = rightFixedColumns
   }
   return [
     <tr

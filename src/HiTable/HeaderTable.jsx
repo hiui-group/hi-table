@@ -13,12 +13,13 @@ import {
 } from './util'
 import { Resizable } from 'react-resizable'
 
-const HeaderTable = ({ isFixed, bodyWidth }) => {
+const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
   const {
     rowSelection,
     data,
     columns,
-    fixedColumns,
+    leftFixedColumns,
+    rightFixedColumns,
     expandedRender,
     ceiling,
     scrollBarSize,
@@ -58,8 +59,11 @@ const HeaderTable = ({ isFixed, bodyWidth }) => {
 
   // *****************处理分组表头逻辑
   let headerColumns = columns
-  if (isFixed) {
-    headerColumns = fixedColumns
+  if (isFixed === 'left') {
+    headerColumns = leftFixedColumns
+  }
+  if (isFixed === 'right') {
+    headerColumns = rightFixedColumns
   }
   let _columns = _.cloneDeep(headerColumns)
   let depthArray = []
@@ -67,6 +71,7 @@ const HeaderTable = ({ isFixed, bodyWidth }) => {
 
   let maxDepth = depthArray.length > 0 ? Math.max.apply(null, depthArray) : 0
   const columnsgroup = flatTreeData(_columns).filter(col => col.isLast)
+
   flatTreeData(_columns).forEach(column => {
     let leafChildren = []
     getLeafChildren(column, leafChildren)
@@ -258,17 +263,25 @@ const HeaderTable = ({ isFixed, bodyWidth }) => {
           ref={headerInner}
         >
           <colgroup>
-            {columnsgroup.map((c, index) => (
-              <col
-                key={index}
-                style={{
-                  width:
-                    isFixed || resizable ? realColumnsWidth[index] : c.width,
-                  minWidth:
-                    isFixed || resizable ? realColumnsWidth[index] : c.width
-                }}
-              />
-            ))}
+            {columnsgroup.map((c, index) => {
+              let width
+              if (isFixed === 'right') {
+                width = realColumnsWidth[index + rightFixedIndex]
+              } else if (isFixed === 'left' || resizable) {
+                width = realColumnsWidth[index]
+              } else {
+                width = c.width
+              }
+              return (
+                <col
+                  key={index}
+                  style={{
+                    width: width,
+                    minWidth: width
+                  }}
+                />
+              )
+            })}
           </colgroup>
           <thead>
             {groupedColumns.map((group, index) =>
@@ -319,15 +332,23 @@ const HeaderTable = ({ isFixed, bodyWidth }) => {
       >
         <table style={{ width: 'auto' }}>
           <colgroup>
-            {columnsgroup.map((c, idx) => (
-              <col
-                key={idx}
-                style={{
-                  width: realColumnsWidth[idx],
-                  minWidth: realColumnsWidth[idx]
-                }}
-              />
-            ))}
+            {columnsgroup.map((c, idx) => {
+              return (
+                <col
+                  key={idx}
+                  style={{
+                    width:
+                      isFixed === 'left'
+                        ? realColumnsWidth[idx]
+                        : realColumnsWidth[idx + rightFixedIndex],
+                    minWidth:
+                      isFixed === 'left'
+                        ? realColumnsWidth[idx]
+                        : realColumnsWidth[idx + rightFixedIndex]
+                  }}
+                />
+              )
+            })}
           </colgroup>
           <thead>
             {groupedColumns.map((group, idx) =>

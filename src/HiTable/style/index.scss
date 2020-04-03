@@ -49,24 +49,45 @@
   &--small {
     table {
       tr {
-        height: $smallHeight !important;
         font-size: $smallFontSize !important;
+        & > td {
+          padding: $smallPadding !important;
+        }
+      }
+      thead {
+        & > tr > th {
+          padding: $smallPadding !important;
+        }
       }
     }
   }
   &--mini {
     table {
       tr {
-        height: $miniHeight !important;
         font-size: $miniFontSize !important;
+        & > td {
+          padding: $miniPadding !important;
+        }
+      }
+      thead {
+        & > tr > th {
+          padding: $miniPadding !important;
+        }
       }
     }
   }
   &--large {
     table {
       tr {
-        height: $largeHeight !important;
-        font-size: $largeFontSize !important;
+        font-size: $miniFontSize !important;
+        & > td {
+          padding: $largePadding !important;
+        }
+      }
+      thead {
+        & > tr > th {
+          padding: $largePadding !important;
+        }
       }
     }
   }
@@ -95,11 +116,18 @@
       }
     }
   }
-  &__container--fixed {
+  &__container--fixed-left {
     z-index: 1;
     position: absolute;
     top: 0;
-    border-right: 2px solid #ccc;
+    border-right: 2px solid #e6e7e8;
+    overflow: hidden;
+  }
+  &__container--fixed-right {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    border-left: 2px solid #e6e7e8;
     overflow: hidden;
   }
   &__header {

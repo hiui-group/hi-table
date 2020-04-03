@@ -21,7 +21,6 @@
 
     td,
     th {
-      // white-space: nowrap;
       padding-left: 8px;
       padding-right: 16px;
       border-bottom: 1px solid $borderColor;
@@ -45,7 +44,6 @@
     }
 
     tr {
-      height: $normalHeight;
       font-size: $nornamFontSize;
       padding: 0;
       box-sizing: border-box;

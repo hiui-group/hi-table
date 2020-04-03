@@ -76,24 +76,36 @@ const Table = props => {
   const flattedColumns = flatTreeData(columns)
   // 有表头分组那么也要 bordered
   const _bordered = flattedColumns.length > columns.length || bordered
+  // ******************* 列冻结 ********************
+  // 左侧冻结
+  const leftFixedColumn =
+    freezeColumn ||
+    (typeof fixedToColumn === 'string'
+      ? fixedToColumn
+      : fixedToColumn && fixedToColumn.left)
+  // 右侧冻结
+  const rightFixedColumn = fixedToColumn && fixedToColumn.right
 
-  // 固定列逻辑，后续可以抽成一个函数
-  const fixedColumn = freezeColumn || fixedToColumn
-  // 计算冻结列需要取道index最大那个往左全部冻结
-  let maxIndex
+  let leftFixedIndex, rightFixedIndex
   columns.forEach((c, index) => {
-    if (fixedColumn === c.dataKey) {
-      maxIndex = index
+    if (leftFixedColumn === c.dataKey) {
+      leftFixedIndex = index
+    }
+    if (rightFixedColumn === c.dataKey) {
+      rightFixedIndex = index
     }
   })
-  const realFixedColumns = [...columns].splice(0, maxIndex + 1)
-  const fixedData = getFixedDataByFixedColumn(realFixedColumns, data)
+  const realLeftFixedColumns = [...columns].splice(0, leftFixedIndex + 1)
+  const leftFixedData = getFixedDataByFixedColumn(realLeftFixedColumns, data)
+  const realRightFixedColumns = [...columns].splice(rightFixedIndex)
 
+  const rightFixedData = getFixedDataByFixedColumn(realRightFixedColumns, data)
   // 同步滚动条
   const headerTableRef = useRef(null)
   const stickyHeaderRef = useRef(null)
   const bodyTableRef = useRef(null)
-  const fixedBodyTableRef = useRef(null)
+  const leftFixedBodyTableRef = useRef(null)
+  const rightFixedBodyTableRef = useRef(null)
   const syncScrollLeft = (scrollLeft, syncTarget) => {
     if (syncTarget && syncTarget.scrollLeft !== scrollLeft) {
       syncTarget.scrollLeft = scrollLeft
@@ -148,10 +160,9 @@ const Table = props => {
     }
     if (dataSource) {
       const fetchConfig = dataSource(1)
-      axios(fetchConfig)
-        .then(res => {
-          setServerTableConfig(res)
-        })
+      axios(fetchConfig).then(res => {
+        setServerTableConfig(res)
+      })
     }
   }, [_ceiling, dataSource])
   return (
@@ -170,10 +181,12 @@ const Table = props => {
         data: (dataSource && serverTableConfig.data) || data,
         columns: (dataSource && serverTableConfig.columns) || columns,
         expandedRender,
-        fixedColumns: realFixedColumns,
+        leftFixedColumns: realLeftFixedColumns,
+        rightFixedColumns: realRightFixedColumns,
         realColumnsWidth,
         setRealColumnsWidth,
-        fixedData,
+        leftFixedData,
+        rightFixedData,
         ceiling,
         headerVisible,
         scrollBarSize: getScrollBarSize(), // 滚动条宽度
@@ -198,7 +211,8 @@ const Table = props => {
         stickyHeaderRef,
         bodyTableRef,
         syncScrollLeft,
-        fixedBodyTableRef,
+        leftFixedBodyTableRef,
+        rightFixedBodyTableRef,
         syncScrollTop,
         alignRightColumns,
         // setting 列操作相关
@@ -227,16 +241,29 @@ const Table = props => {
           <HeaderTable bodyWidth={baseTableWidth} />
           <BodyTable />
         </div>
-        {/* Fixed table 固定列表格 */}
-        {fixedColumn && realFixedColumns.length > 0 && (
+        {/* Left fixed table 左侧固定列表格 */}
+        {leftFixedColumn && realLeftFixedColumns.length > 0 && (
           <div
             className={classnames(
               `${prefix}__container`,
-              `${prefix}__container--fixed`
+              `${prefix}__container--fixed-left`
             )}
           >
-            <HeaderTable isFixed />
-            <FixedBodyTable />
+            <HeaderTable isFixed='left' />
+            <FixedBodyTable isFixed='left' />
+          </div>
+        )}
+        {/* Right fixed table 右侧固定列表格 */}
+        {rightFixedColumn && realRightFixedColumns.length > 0 && (
+          <div
+            className={classnames(
+              `${prefix}__container`,
+              `${prefix}__container--fixed-right`
+            )}
+            style={{ right: 0 }}
+          >
+            <HeaderTable isFixed='right' rightFixedIndex={rightFixedIndex} />
+            <FixedBodyTable isFixed='right' rightFixedIndex={rightFixedIndex} />
           </div>
         )}
         {/* Pagination 分页组件 */}
@@ -287,12 +314,12 @@ const TableWrapper = ({ columns, uniqueId, standard, ...settingProps }) => {
 
   const standardPreset = standard
     ? {
-      showColMenu: true,
-      sticky: true,
-      bordered: true,
-      setting: true,
-      striped: true
-    }
+        showColMenu: true,
+        sticky: true,
+        bordered: true,
+        setting: true,
+        striped: true
+      }
     : {}
 
   // ***************
