@@ -2124,7 +2124,7 @@ export default StandardTable
 | highlightedColKeys | 高亮列（受控）                                                                                          | string[]                                       | -                                         | []        |
 | expandedRender     | 表格展开项                                                                                              | (record: dataItem, index: number) => ReactNode | -                                         | -         |
 | maxHeight          | 表格最大高度，当穿过该高度时，展示滚动条且表头固定                                                      | number                                         | -                                         | -         |
-| fixedToColumn      | 表格左冻结至某一列                                                                                      | string                                         | -                                         | null      |
+| fixedToColumn      | 表格列冻结设置，为 string 时仅支持从左侧冻结至某一列                                                    | string \| FixedOption                          | -                                         | null      |
 | size               | 配置表格尺寸                                                                                            | string                                         | 'large' \| 'default' \| 'small' \| 'mini' | 'default' |
 | pagination         | 表格分页配置项                                                                                          | Pagination                                     | -                                         | null      |
 | errorRowKeys       | 错误列（受控）                                                                                          | string[]                                       | -                                         | []        |
@@ -2153,8 +2153,6 @@ export default StandardTable
 
 ### Type: DataSource
 
-### DataSource
-
 | 参数              | 说明                                      | 类型                              | 可选值                                             | 默认值        |
 | ----------------- | ----------------------------------------- | --------------------------------- | -------------------------------------------------- | ------------- |
 | url               | 请求的 url                                | string                            | -                                                  | -             |
@@ -2181,3 +2179,10 @@ export default StandardTable
 | onJump           | 快速跳转时触发，回调值为当前页数                           | (current: number) => void                                 | -                                 | -         |
 | onChange         | 页码改变时的回调，回调值为当前页数、之前的页数和每页条数   | (current: number, prev: number, pageSize: number) => void | -                                 | -         | - |
 | onPageSizeChange | 每页显示条数改变的回调函数，返回改变后的每页条数及当前页数 | (current: number, pageSize: number) => void               | -                                 | -         | - |
+
+### Type: FixedOption
+
+| 参数  | 说明                 | 类型   | 可选值 | 默认值 |
+| ----- | -------------------- | ------ | ------ | ------ |
+| left  | 表格从左侧冻结至某列 | string | -      | -      |
+| right | 表格从右侧冻结至某列 | string | -      | -      |
