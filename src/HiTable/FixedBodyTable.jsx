@@ -140,14 +140,6 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
         >
           <colgroup>
             {columnsgroup.map((c, idx) => {
-              if (isFixed === 'right') {
-                console.log(
-                  777,
-                  idx,
-                  rightFixedIndex,
-                  realColumnsWidth[idx + rightFixedIndex]
-                )
-              }
               return (
                 <col
                   key={idx}
