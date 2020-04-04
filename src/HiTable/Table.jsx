@@ -25,6 +25,7 @@ const Table = props => {
   const [hoverRow, setHoverRow] = useState(null)
   const [serverTableConfig, setServerTableConfig] = useState({})
   const [eachRowHeight, setEachRowHeight] = useState([])
+  const [eachHeaderHeight, setEachHeaderHeight] = useState(null)
 
   const {
     striped,
@@ -225,7 +226,10 @@ const Table = props => {
         scrollWidth,
         // 同步行高度
         eachRowHeight,
-        setEachRowHeight
+        setEachRowHeight,
+        // 同步表头高度
+        eachHeaderHeight,
+        setEachHeaderHeight
       }}
     >
       <div

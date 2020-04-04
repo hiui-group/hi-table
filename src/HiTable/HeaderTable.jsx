@@ -38,7 +38,9 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
     setRealColumnsWidth,
     resizable,
     setting,
-    scrollWidth
+    scrollWidth,
+    eachHeaderHeight,
+    setEachHeaderHeight
   } = useContext(TableContext)
 
   // ******************** 隐藏滚动条
@@ -97,6 +99,13 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
     }
   }, [columns, headerInner])
 
+  // ******************** 同步行高度
+  useEffect(() => {
+    if (headerInner.current && !isFixed) {
+      setEachHeaderHeight(headerInner.current.clientHeight)
+    }
+  }, [headerInner])
+
   // ********************处理排序逻辑
   // 可以排序的必须的是最后一级列
 
@@ -122,7 +131,9 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
                 rowSpan={groupedColumns.length}
                 key='checkbox'
                 style={{
-                  boxSizing: 'border-box'
+                  boxSizing: 'border-box',
+                  width: 50,
+                  height: isFixed ? eachHeaderHeight : 'auto'
                 }}
               >
                 <Checkbox
@@ -147,7 +158,8 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
                 rowSpan={groupedColumns.length}
                 style={{
                   boxSizing: 'border-box',
-                  width: 50
+                  width: 50,
+                  height: isFixed ? eachHeaderHeight : 'auto'
                 }}
               >
                 <span />
@@ -160,6 +172,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
                 colSpan={c.colSpan}
                 rowSpan={c.rowSpan}
                 style={{
+                  height: isFixed ? eachHeaderHeight : 'auto',
                   boxSizing: 'border-box',
                   textAlign: alignRightColumns.includes(c.dataKey)
                     ? 'right'
@@ -228,10 +241,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
         overflow: 'hidden',
         boxShadow: maxHeight && '0px 2px 6px 0px rgba(0,0,0,0.12)',
         position: 'relative',
-        height:
-          (bordered
-            ? headerInner.current && headerInner.current.clientHeight + 1
-            : headerInner.current && headerInner.current.clientHeight) || 'auto'
+        height: (bordered ? eachHeaderHeight + 1 : eachHeaderHeight) || 'auto'
       }}
     >
       {setting && !isFixed && <SettingMenu />}
@@ -243,9 +253,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
           overflowY: maxHeight && !isFixed ? 'scroll' : 'hidden',
           overflowX: isFixed ? 'hidden' : 'scroll',
           marginBottom: !isFixed && -scrollBarSize,
-          height:
-            (headerInner.current && headerInner.current.clientHeight + 20) ||
-            'auto'
+          height: eachHeaderHeight + 20 || 'auto'
         }}
         onScroll={e => {
           syncScrollLeft(
@@ -259,7 +267,10 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
         }}
       >
         <table
-          style={{ width: isFixed ? 'auto' : scrollWidth || '100%' }}
+          style={{
+            width: isFixed ? 'auto' : scrollWidth || '100%',
+            height: isFixed ? eachHeaderHeight : 'auto'
+          }}
           ref={headerInner}
         >
           <colgroup>
