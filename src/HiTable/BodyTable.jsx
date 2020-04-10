@@ -4,7 +4,7 @@ import TableContext from './context'
 import _ from 'lodash'
 import { flatTreeData, setDepth } from './util'
 
-const BodyTable = props => {
+const BodyTable = (props) => {
   const [expandedTreeRows, setExpandedTreeRows] = useState([])
   const {
     bordered,
@@ -24,13 +24,13 @@ const BodyTable = props => {
     realColumnsWidth,
     resizable,
     scrollWidth,
-    setEachRowHeight
+    setEachRowHeight,
   } = useContext(TableContext)
   // **************** 获取colgroup
   let _columns = _.cloneDeep(columns)
   let depthArray = []
   setDepth(_columns, 0, depthArray)
-  const columnsgroup = flatTreeData(_columns).filter(col => col.isLast)
+  const columnsgroup = flatTreeData(_columns).filter((col) => col.isLast)
   // ****************
 
   // **************** 同步滚动位置
@@ -41,8 +41,8 @@ const BodyTable = props => {
 
   if (activeSorterColumn) {
     let sorter =
-      columns.filter(d => d.dataKey === activeSorterColumn)[0] &&
-      columns.filter(d => d.dataKey === activeSorterColumn)[0].sorter
+      columns.filter((d) => d.dataKey === activeSorterColumn)[0] &&
+      columns.filter((d) => d.dataKey === activeSorterColumn)[0].sorter
 
     if (sorter) {
       _data =
@@ -53,7 +53,7 @@ const BodyTable = props => {
   }
   // ************* 处理求和、平均数
   const hasSumColumn =
-    columns.filter(item => {
+    columns.filter((item) => {
       return item.total
     }).length > 0
   let sumRow = { key: 'sum' }
@@ -62,11 +62,11 @@ const BodyTable = props => {
       sumRow[c.dataKey] = '合计'
     }
     if (c.total) {
-      sumRow[c.dataKey] = _.sumBy(_data, d => d[c.dataKey])
+      sumRow[c.dataKey] = _.sumBy(_data, (d) => d[c.dataKey])
     }
   })
   const hasAvgColumn =
-    columns.filter(item => {
+    columns.filter((item) => {
       return item.avg
     }).length > 0
   let avgRow = { key: 'avg' }
@@ -75,21 +75,21 @@ const BodyTable = props => {
       avgRow[c.dataKey] = '平均值'
     }
     if (c.sum) {
-      avgRow[c.dataKey] = _.sumBy(_data, d => d[c.dataKey]) / _data.length
+      avgRow[c.dataKey] = _.sumBy(_data, (d) => d[c.dataKey]) / _data.length
     }
   })
   useEffect(() => {
     if (tableRef.current && tableRef.current.children[1].children) {
       let rowHeightArray = Array.from(
         tableRef.current.children[1].children
-      ).map(tr => tr.clientHeight)
+      ).map((tr) => tr.clientHeight)
       setEachRowHeight(rowHeightArray)
     }
   }, [data])
 
   let hasTree = false
   if (_data && _data.length) {
-    hasTree = _data.some(row => {
+    hasTree = _data.some((row) => {
       return row.children && row.children.length
     })
   }
@@ -98,7 +98,7 @@ const BodyTable = props => {
     let childrenHasTree = false
     if (row.children && row.children.length) {
       childrenHasTree = row.children.some(
-        child => child.children && child.children.length
+        (child) => child.children && child.children.length
       )
     }
     return (
@@ -107,6 +107,7 @@ const BodyTable = props => {
           innerRef={index === 0 ? firstRowRef : null}
           key={row.key}
           rowData={row}
+          allRowData={row}
           level={level}
           index={index}
           expandedTree={expandedTreeRows.includes(row.key)}
@@ -118,7 +119,7 @@ const BodyTable = props => {
         />
         {row.children &&
           expandedTreeRows.includes(row.key) &&
-          row.children.map(child => {
+          row.children.map((child) => {
             return renderRow(
               child,
               level + 1,
@@ -142,10 +143,10 @@ const BodyTable = props => {
           (bodyTableRef.current && bodyTableRef.current.clientWidth) <
           (tableRef.current && tableRef.current.clientWidth)
             ? 'scroll'
-            : null // 表格宽度大于div宽度才展示横向滚动条
+            : null, // 表格宽度大于div宽度才展示横向滚动条
       }}
       ref={bodyTableRef}
-      onScroll={e => {
+      onScroll={(e) => {
         syncScrollLeft(bodyTableRef.current.scrollLeft, headerTableRef.current)
         syncScrollLeft(bodyTableRef.current.scrollLeft, stickyHeaderRef.current)
         syncScrollTop(
@@ -162,7 +163,7 @@ const BodyTable = props => {
         ref={tableRef}
         style={{
           borderLeft: bordered ? '1px solid #e7e7e7' : 'none',
-          width: scrollWidth || '100%'
+          width: scrollWidth || '100%',
         }}
       >
         <colgroup>
@@ -171,7 +172,7 @@ const BodyTable = props => {
               key={index}
               style={{
                 width: resizable ? realColumnsWidth[index] : c.width,
-                minWidth: resizable ? realColumnsWidth[index] : c.width
+                minWidth: resizable ? realColumnsWidth[index] : c.width,
                 // width: c.width,
                 // minWidth: c.width
               }}

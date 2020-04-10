@@ -7,6 +7,7 @@ import { flatTreeData, setDepth } from './util'
 const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
   const [expandedTreeRows, setExpandedTreeRows] = useState([])
   const {
+    data,
     leftFixedData,
     rightFixedData,
     leftFixedColumns,
@@ -32,15 +33,17 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
   }
   let depthArray = []
   setDepth(_columns, 0, depthArray)
-  const columnsgroup = flatTreeData(_columns).filter(col => col.isLast)
+  const columnsgroup = flatTreeData(_columns).filter((col) => col.isLast)
   const bodyInner = useRef(null)
-  const renderRow = (row, level, index) => {
+  const renderRow = (row, level, index, allRowData) => {
     return (
       <React.Fragment key={row.key}>
         <Row
           rowData={row}
+          allRowData={allRowData}
           isFixed={isFixed}
           level={level}
+          index={index}
           rowHeight={eachRowHeight[index]}
           expandedTree={expandedTreeRows.includes(row.key)}
           expandedTreeRows={expandedTreeRows}
@@ -48,7 +51,7 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
         />
         {row.children &&
           expandedTreeRows.includes(row.key) &&
-          row.children.map(child => {
+          row.children.map((child) => {
             return renderRow(child, level + 1)
           })}
       </React.Fragment>
@@ -77,8 +80,8 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
 
   if (activeSorterColumn) {
     let sorter =
-      fixedColumns.filter(d => d.dataKey === activeSorterColumn)[0] &&
-      fixedColumns.filter(d => d.dataKey === activeSorterColumn)[0].sorter
+      fixedColumns.filter((d) => d.dataKey === activeSorterColumn)[0] &&
+      fixedColumns.filter((d) => d.dataKey === activeSorterColumn)[0].sorter
 
     if (sorter) {
       _fixedData =
@@ -113,7 +116,7 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
           marginRight: -scrollBarSize // 利用负 margin 隐藏滚动条
         }}
         ref={fixedBodyTableRef}
-        onScroll={e => {
+        onScroll={(e) => {
           syncScrollTop(
             fixedBodyTableRef.current.scrollTop,
             bodyTableRef.current
@@ -158,7 +161,9 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
             })}
           </colgroup>
           <tbody>
-            {_fixedData.map((row, index) => renderRow(row, 1, index))}
+            {_fixedData.map((row, index) =>
+              renderRow(row, 1, index, data[index])
+            )}
           </tbody>
         </table>
       </div>

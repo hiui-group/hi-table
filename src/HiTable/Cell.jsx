@@ -7,6 +7,7 @@ import Indent from './Indent'
 const Cell = ({
   column,
   rowData,
+  allRowData,
   columnIndex,
   level,
   expandedTree,
@@ -23,8 +24,8 @@ const Cell = ({
   } = useContext(TableContext)
   // 处理自定义 render 或者合并单元格情况
   let cellContent = column.render
-    ? column.render(rowData[column.dataKey], rowData, rowIndex)
-    : rowData[column.dataKey]
+    ? column.render(allRowData[column.dataKey], allRowData, rowIndex)
+    : allRowData[column.dataKey]
   const isMergeCell =
     typeof cellContent === 'object' && !cellContent['$$typeof']
 
@@ -38,7 +39,9 @@ const Cell = ({
     <td
       key={column.dataKey}
       style={{
-        textAlign: alignRightColumns.includes(column.dataKey) ? 'right' : 'left'
+        textAlign: alignRightColumns.includes(column.dataKey)
+          ? 'right'
+          : 'left'
       }}
       colSpan={(isMergeCell && cellContent.props.colSpan) || ''}
       rowSpan={(isMergeCell && cellContent.props.rowSpan) || ''}
@@ -58,7 +61,7 @@ const Cell = ({
               const _expandedTreeRows = [...expandedTreeRows]
               if (_expandedTreeRows.includes(rowData.key)) {
                 const idx = _expandedTreeRows.findIndex(
-                  row => row === rowData.key
+                  (row) => row === rowData.key
                 )
                 _expandedTreeRows.splice(idx, 1)
                 setExpandedTreeRows(_expandedTreeRows)

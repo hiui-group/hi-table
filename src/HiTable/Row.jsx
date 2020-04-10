@@ -8,6 +8,7 @@ import { flatTreeData, setDepth } from './util'
 
 const Row = ({
   rowData,
+  allRowData,
   level,
   expandedTree,
   expandedTreeRows,
@@ -39,7 +40,7 @@ const Row = ({
   let depthArray = []
   setDepth(_columns, 0, depthArray)
 
-  let rowColumns = flatTreeData(_columns).filter(col => col.isLast)
+  let rowColumns = flatTreeData(_columns).filter((col) => col.isLast)
   if (isFixed === 'left') {
     rowColumns = leftFixedColumns
   }
@@ -58,25 +59,25 @@ const Row = ({
         [`${prefix}__row--avg`]: isAvgRow
       })}
       key='row'
-      onDoubleClick={e => {
+      onDoubleClick={(e) => {
         if (highlightedRowKeys.includes(rowData.key)) {
-          setHighlightRows(highlightedRowKeys.filter(r => r !== rowData.key))
+          setHighlightRows(highlightedRowKeys.filter((r) => r !== rowData.key))
         } else {
           setHighlightRows(highlightedRowKeys.concat(rowData.key))
         }
       }}
-      onMouseEnter={e => setHoverRow(rowData.key)}
-      onMouseLeave={e => setHoverRow(null)}
+      onMouseEnter={(e) => setHoverRow(rowData.key)}
+      onMouseLeave={(e) => setHoverRow(null)}
     >
       {rowSelection && (
         <td>
           <Checkbox
             checked={rowSelection.selectedRowKeys.includes(rowData.key)}
-            onChange={e => {
+            onChange={(e) => {
               const { selectedRowKeys = [], onChange } = rowSelection
               let _selectedRowKeys = [...selectedRowKeys]
               if (_selectedRowKeys.includes(rowData.key)) {
-                onChange(_selectedRowKeys.filter(key => key !== rowData.key))
+                onChange(_selectedRowKeys.filter((key) => key !== rowData.key))
               } else {
                 _selectedRowKeys.push(rowData.key)
                 onChange(_selectedRowKeys)
@@ -102,6 +103,7 @@ const Row = ({
           key={idx}
           column={column}
           rowData={rowData}
+          allRowData={allRowData}
           level={level}
           columnIndex={idx}
           rowIndex={index}

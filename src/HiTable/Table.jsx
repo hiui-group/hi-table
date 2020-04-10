@@ -13,7 +13,7 @@ import axios from 'axios'
 import FixedBodyTable from './FixedBodyTable'
 import './style'
 
-const Table = props => {
+const Table = (props) => {
   const hiTable = useRef(null)
   const [ceiling, setCeiling] = useState(false)
   const [headerVisible, setHeaderVisible] = useState(true)
@@ -57,18 +57,18 @@ const Table = props => {
   } = props
 
   const [realColumnsWidth, setRealColumnsWidth] = useState(
-    columns.map(c => c.width || 'auto')
+    columns.map((c) => c.width || 'auto')
   )
 
   const firstRowRef = useRef(null)
 
   useEffect(() => {
-    setRealColumnsWidth(columns.map(c => c.width || 'auto'))
+    setRealColumnsWidth(columns.map((c) => c.width || 'auto'))
     setTimeout(() => {
       if (firstRowRef.current) {
         const _realColumnsWidth = Array.from(
           firstRowRef.current.childNodes
-        ).map(node => node.clientWidth)
+        ).map((node) => node.clientWidth)
         setRealColumnsWidth(_realColumnsWidth)
       }
     })
@@ -121,12 +121,12 @@ const Table = props => {
   const _pagination = (dataSource && serverTableConfig.pagination) || pagination
   // 高亮行
   const _highlightRows = highlightedRowKeys.concat(
-    highlightRows.filter(row => !highlightedRowKeys.includes(row.key))
+    highlightRows.filter((row) => !highlightedRowKeys.includes(row.key))
   )
   // 需要右对齐的列
   const alignRightColumns = columns
-    .filter(c => c.align === 'right')
-    .map(col => col.dataKey)
+    .filter((c) => c.align === 'right')
+    .map((col) => col.dataKey)
   // baseTable
   const baseTable = useRef(null)
   const [baseTableWidth, setBaseTableWidth] = useState('100%')
@@ -161,7 +161,7 @@ const Table = props => {
     }
     if (dataSource) {
       const fetchConfig = dataSource(1)
-      axios(fetchConfig).then(res => {
+      axios(fetchConfig).then((res) => {
         setServerTableConfig(res)
       })
     }
@@ -179,7 +179,7 @@ const Table = props => {
         highlightedRowKeys: _highlightRows,
         setHighlightRows,
         highlightedColKeys,
-        data: (dataSource && serverTableConfig.data) || data,
+        data: (dataSource && (serverTableConfig.data || [])) || data,
         columns: (dataSource && serverTableConfig.columns) || columns,
         expandedRender,
         leftFixedColumns: realLeftFixedColumns,
@@ -318,12 +318,12 @@ const TableWrapper = ({ columns, uniqueId, standard, ...settingProps }) => {
 
   const standardPreset = standard
     ? {
-        showColMenu: true,
-        sticky: true,
-        bordered: true,
-        setting: true,
-        striped: true
-      }
+      showColMenu: true,
+      sticky: true,
+      bordered: true,
+      setting: true,
+      striped: true
+    }
     : {}
 
   // ***************
