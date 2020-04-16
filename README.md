@@ -515,7 +515,7 @@ const RowSelectionTable = () => {
       data={data}
       rowSelection={{
         selectedRowKeys: selectedRowKeys,
-        onChange: selectedRowKeys => {
+        onChange: (selectedRowKeys) => {
           setSelectedRowKeys(selectedRowKeys)
         }
       }}
@@ -694,9 +694,7 @@ class App extends React.Component {
     data: datas
   }
   render() {
-    return (
-      <Table columns={columns} data={this.state.data} errorRows={['4', '5']} />
-    )
+    return <Table columns={columns} data={this.state.data} errorRows={['4', '5']} />
   }
 }
 
@@ -966,7 +964,7 @@ let data = [
   }
 ]
 
-export default function() {
+export default function () {
   return <Table columns={columns} data={data} size='large' />
 }
 ```
@@ -1059,7 +1057,7 @@ let data = [
   }
 ]
 
-export default function() {
+export default function () {
   return <Table columns={columns} data={data} showColMenu />
 }
 ```
@@ -1209,7 +1207,7 @@ for (let i = 0; i < 20; i++) {
   })
 }
 
-export default function() {
+export default function () {
   return <Table columns={columns} data={data} sticky />
 }
 ```
@@ -1591,14 +1589,7 @@ let data = [
 ]
 
 const FixedTable = () => {
-  return (
-    <Table
-      columns={columns}
-      data={data}
-      maxHeight={200}
-      fixedToColumn={'age'}
-    />
-  )
+  return <Table columns={columns} data={data} maxHeight={200} fixedToColumn={'age'} />
 }
 
 export default FixedTable
@@ -1895,9 +1886,7 @@ let data = [
 ]
 
 const DynamicTable = () => {
-  return (
-    <Table uniqueId='666' columns={columns} data={data} bordered resizable />
-  )
+  return <Table uniqueId='666' columns={columns} data={data} bordered resizable />
 }
 
 export default DynamicTable
@@ -2115,27 +2104,28 @@ export default StandardTable
 
 ### Props
 
-| 属性名             | 描述                                                                                                    | 类型                                           | 可选值                                    | 默认值    |
-| ------------------ | ------------------------------------------------------------------------------------------------------- | ---------------------------------------------- | ----------------------------------------- | --------- |
-| data               | 表格数据                                                                                                | object[]                                       | -                                         | -         |
-| columns            | 表格列配置信息                                                                                          | ColumnItem[]                                   | -                                         | -         |
-| bordered           | 是否显示边框（表头分组模式下，表格自带边框）                                                            | boolean                                        | true \| false                             | false     |
-| sticky             | 是否支持表头吸顶                                                                                        | boolean                                        | true \| false                             | false     |
-| highlightedColKeys | 高亮列（受控）                                                                                          | string[]                                       | -                                         | []        |
-| expandedRender     | 表格展开项                                                                                              | (record: dataItem, index: number) => ReactNode | -                                         | -         |
-| maxHeight          | 表格最大高度，当穿过该高度时，展示滚动条且表头固定                                                      | number                                         | -                                         | -         |
-| fixedToColumn      | 表格列冻结设置，为 string 时仅支持从左侧冻结至某一列                                                    | string \| FixedOption                          | -                                         | null      |
-| size               | 配置表格尺寸                                                                                            | string                                         | 'large' \| 'default' \| 'small' \| 'mini' | 'default' |
-| pagination         | 表格分页配置项                                                                                          | Pagination                                     | -                                         | null      |
-| errorRowKeys       | 错误列（受控）                                                                                          | string[]                                       | -                                         | []        |
-| highlightedRowKeys | 高亮行（受控）                                                                                          | string[]                                       | -                                         | []        |
-| rowSelection       | 行可选（受控）                                                                                          | RowSelection                                   | -                                         | null      |
-| dataSource         | 异步数据源                                                                                              | (current: number) => DataSource                | -                                         | null      |
-| showColMenu        | 是否支持列操作                                                                                          | boolean                                        | -                                         | false     |
-| striped            | 是否展示为斑马纹效果                                                                                    | boolean                                        | -                                         | false     |
-| setting            | 是否集成控制面板功能                                                                                    | boolean                                        | -                                         | false     |
-| resizable          | 是否能够动态控制列宽                                                                                    | boolean                                        | true \| false                             | false     |
-| standard           | 标准模式，默认集成 `showColMenu = true, sticky = true, bordered = true, setting = true, striped = true` | boolean                                        | true \| false                             | false     |
+| 属性名             | 描述                                                                                                    | 类型                                           | 可选值                                    | 默认值     |
+| ------------------ | ------------------------------------------------------------------------------------------------------- | ---------------------------------------------- | ----------------------------------------- | ---------- |
+| data               | 表格数据                                                                                                | object[]                                       | -                                         | -          |
+| columns            | 表格列配置信息                                                                                          | ColumnItem[]                                   | -                                         | -          |
+| bordered           | 是否显示边框（表头分组模式下，表格自带边框）                                                            | boolean                                        | true \| false                             | false      |
+| sticky             | 是否支持表头吸顶                                                                                        | boolean                                        | true \| false                             | false      |
+| highlightedColKeys | 高亮列（受控）                                                                                          | string[]                                       | -                                         | []         |
+| expandedRender     | 表格展开项                                                                                              | (record: dataItem, index: number) => ReactNode | -                                         | -          |
+| maxHeight          | 表格最大高度，当穿过该高度时，展示滚动条且表头固定                                                      | number                                         | -                                         | -          |
+| fixedToColumn      | 表格列冻结设置，为 string 时仅支持从左侧冻结至某一列                                                    | string \| FixedOption                          | -                                         | null       |
+| size               | 配置表格尺寸                                                                                            | string                                         | 'large' \| 'default' \| 'small' \| 'mini' | 'default'  |
+| pagination         | 表格分页配置项                                                                                          | Pagination                                     | -                                         | null       |
+| errorRowKeys       | 错误列（受控）                                                                                          | string[]                                       | -                                         | []         |
+| highlightedRowKeys | 高亮行（受控）                                                                                          | string[]                                       | -                                         | []         |
+| rowSelection       | 行可选（受控）                                                                                          | RowSelection                                   | -                                         | null       |
+| dataSource         | 异步数据源                                                                                              | (current: number) => DataSource                | -                                         | null       |
+| showColMenu        | 是否支持列操作                                                                                          | boolean                                        | -                                         | false      |
+| striped            | 是否展示为斑马纹效果                                                                                    | boolean                                        | -                                         | false      |
+| setting            | 是否集成控制面板功能                                                                                    | boolean                                        | -                                         | false      |
+| emptyContent       | 数据为空时的展示内容                                                                                    | string \| () => ReactNode                      | -                                         | '暂无数据' |
+| resizable          | 是否能够动态控制列宽                                                                                    | boolean                                        | true \| false                             | false      |
+| standard           | 标准模式，默认集成 `showColMenu = true, sticky = true, bordered = true, setting = true, striped = true` | boolean                                        | true \| false                             | false      |
 
 ### Type: ColumnItem
 
