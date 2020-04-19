@@ -3,11 +3,7 @@ import HeaderTable from './HeaderTable'
 import BodyTable from './BodyTable'
 import TableContext from './context'
 import classnames from 'classnames'
-import {
-  getFixedDataByFixedColumn,
-  getScrollBarSize,
-  flatTreeData
-} from './util'
+import { getFixedDataByFixedColumn, getScrollBarSize, flatTreeData } from './util'
 import { Pagination } from '@hi-ui/hiui'
 import axios from 'axios'
 import FixedBodyTable from './FixedBodyTable'
@@ -53,12 +49,11 @@ const Table = (props) => {
     visibleCols,
     setVisibleCols,
     setCacheVisibleCols,
-    scrollWidth
+    scrollWidth,
+    emptyContent = '暂无数据'
   } = props
 
-  const [realColumnsWidth, setRealColumnsWidth] = useState(
-    columns.map((c) => c.width || 'auto')
-  )
+  const [realColumnsWidth, setRealColumnsWidth] = useState(columns.map((c) => c.width || 'auto'))
 
   const firstRowRef = useRef(null)
 
@@ -66,9 +61,9 @@ const Table = (props) => {
     setRealColumnsWidth(columns.map((c) => c.width || 'auto'))
     setTimeout(() => {
       if (firstRowRef.current) {
-        const _realColumnsWidth = Array.from(
-          firstRowRef.current.childNodes
-        ).map((node) => node.clientWidth)
+        const _realColumnsWidth = Array.from(firstRowRef.current.childNodes).map(
+          (node) => node.clientWidth
+        )
         setRealColumnsWidth(_realColumnsWidth)
       }
     })
@@ -81,9 +76,7 @@ const Table = (props) => {
   // 左侧冻结
   const leftFixedColumn =
     freezeColumn ||
-    (typeof fixedToColumn === 'string'
-      ? fixedToColumn
-      : fixedToColumn && fixedToColumn.left)
+    (typeof fixedToColumn === 'string' ? fixedToColumn : fixedToColumn && fixedToColumn.left)
   // 右侧冻结
   const rightFixedColumn = fixedToColumn && fixedToColumn.right
 
@@ -124,9 +117,7 @@ const Table = (props) => {
     highlightRows.filter((row) => !highlightedRowKeys.includes(row.key))
   )
   // 需要右对齐的列
-  const alignRightColumns = columns
-    .filter((c) => c.align === 'right')
-    .map((col) => col.dataKey)
+  const alignRightColumns = columns.filter((c) => c.align === 'right').map((col) => col.dataKey)
   // baseTable
   const baseTable = useRef(null)
   const [baseTableWidth, setBaseTableWidth] = useState('100%')
@@ -145,10 +136,7 @@ const Table = (props) => {
           hiTable.current.getBoundingClientRect().bottom >= 35
         ) {
           setCeiling(true)
-          syncScrollLeft(
-            bodyTableRef.current.scrollLeft,
-            stickyHeaderRef.current
-          )
+          syncScrollLeft(bodyTableRef.current.scrollLeft, stickyHeaderRef.current)
         } else {
           setCeiling(false)
         }
@@ -246,16 +234,11 @@ const Table = (props) => {
         {/* Normal table 普通表格 */}
         <div className={`${prefix}__container`} ref={baseTable}>
           <HeaderTable bodyWidth={baseTableWidth} />
-          <BodyTable />
+          <BodyTable fatherRef={hiTable} emptyContent={emptyContent} />
         </div>
         {/* Left fixed table 左侧固定列表格 */}
         {leftFixedColumn && realLeftFixedColumns.length > 0 && (
-          <div
-            className={classnames(
-              `${prefix}__container`,
-              `${prefix}__container--fixed-left`
-            )}
-          >
+          <div className={classnames(`${prefix}__container`, `${prefix}__container--fixed-left`)}>
             <HeaderTable isFixed='left' />
             <FixedBodyTable isFixed='left' />
           </div>
@@ -263,10 +246,7 @@ const Table = (props) => {
         {/* Right fixed table 右侧固定列表格 */}
         {rightFixedColumn && realRightFixedColumns.length > 0 && (
           <div
-            className={classnames(
-              `${prefix}__container`,
-              `${prefix}__container--fixed-right`
-            )}
+            className={classnames(`${prefix}__container`, `${prefix}__container--fixed-right`)}
             style={{ right: 0 }}
           >
             <HeaderTable isFixed='right' rightFixedIndex={rightFixedIndex} />
@@ -309,14 +289,8 @@ const TableWrapper = ({ columns, uniqueId, standard, ...settingProps }) => {
   const [cacheVisibleCols, setCacheVisibleCols] = useState(_cacheVisibleCols)
   useEffect(() => {
     window.localStorage.setItem(`${uniqueId}_sortCol`, JSON.stringify(sortCol))
-    window.localStorage.setItem(
-      `${uniqueId}_visibleCols`,
-      JSON.stringify(visibleCols)
-    )
-    window.localStorage.setItem(
-      `${uniqueId}_cacheVisibleCols`,
-      JSON.stringify(cacheVisibleCols)
-    )
+    window.localStorage.setItem(`${uniqueId}_visibleCols`, JSON.stringify(visibleCols))
+    window.localStorage.setItem(`${uniqueId}_cacheVisibleCols`, JSON.stringify(cacheVisibleCols))
   }, [sortCol, visibleCols, cacheVisibleCols])
 
   useEffect(() => {
@@ -325,12 +299,12 @@ const TableWrapper = ({ columns, uniqueId, standard, ...settingProps }) => {
 
   const standardPreset = standard
     ? {
-      showColMenu: true,
-      sticky: true,
-      bordered: true,
-      setting: true,
-      striped: true
-    }
+        showColMenu: true,
+        sticky: true,
+        bordered: true,
+        setting: true,
+        striped: true
+      }
     : {}
 
   // ***************
