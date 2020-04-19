@@ -159,13 +159,16 @@ const Table = (props) => {
         }
       })
     }
+  }, [_ceiling])
+
+  useEffect(() => {
     if (dataSource) {
-      const fetchConfig = dataSource(1)
+      const fetchConfig = dataSource()
       axios(fetchConfig).then((res) => {
-        setServerTableConfig(res)
+        setServerTableConfig(res.data)
       })
     }
-  }, [_ceiling, dataSource])
+  }, [dataSource])
   return (
     <TableContext.Provider
       value={{
@@ -180,7 +183,7 @@ const Table = (props) => {
         setHighlightRows,
         highlightedColKeys,
         data: (dataSource && (serverTableConfig.data || [])) || data,
-        columns: (dataSource && serverTableConfig.columns) || columns,
+        columns: (dataSource && (serverTableConfig.columns || [])) || columns,
         expandedRender,
         leftFixedColumns: realLeftFixedColumns,
         rightFixedColumns: realRightFixedColumns,
@@ -272,7 +275,11 @@ const Table = (props) => {
         )}
         {/* Pagination 分页组件 */}
         {_pagination && (
-          <div className={`${prefix}__pagination`}>
+          <div
+            className={classnames(`${prefix}__pagination`, {
+              [`${prefix}__pagination--${_pagination.placement}`]: _pagination.placement
+            })}
+          >
             <Pagination {..._pagination} />
           </div>
         )}

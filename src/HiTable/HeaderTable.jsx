@@ -55,7 +55,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
   if (rowSelection) {
     const { selectedRowKeys = [] } = rowSelection
     const flattedData = flatTreeData(data)
-    isAllChecked = flattedData.every(d => selectedRowKeys.includes(d.key))
+    isAllChecked = flattedData.every((d) => selectedRowKeys.includes(d.key))
   }
   // *********************
 
@@ -72,9 +72,9 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
   setDepth(_columns, 0, depthArray)
 
   let maxDepth = depthArray.length > 0 ? Math.max.apply(null, depthArray) : 0
-  const columnsgroup = flatTreeData(_columns).filter(col => col.isLast)
+  const columnsgroup = flatTreeData(_columns).filter((col) => col.isLast)
 
-  flatTreeData(_columns).forEach(column => {
+  flatTreeData(_columns).forEach((column) => {
     let leafChildren = []
     getLeafChildren(column, leafChildren)
     // 在最后一层，colspan = 1, rowspan = maxDepth - depth + 1
@@ -87,10 +87,14 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
   // ********************
 
   useEffect(() => {
-    if (headerInner.current) {
+    if (
+      headerInner.current &&
+      headerInner.current.childNodes &&
+      headerInner.current.childNodes[1].childNodes[0]
+    ) {
       const _minColWidth = Array.from(
         headerInner.current.childNodes[1].childNodes[0].childNodes
-      ).map(th => {
+      ).map((th) => {
         return th.childNodes[0].className === 'power-table__header__title'
           ? th.childNodes[0].offsetWidth
           : 0
@@ -110,8 +114,8 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
   // 可以排序的必须的是最后一级列
 
   const hasSorterColumn = columnsgroup
-    .filter(col => col.sorter)
-    .map(sorterCol => sorterCol.dataKey)
+    .filter((col) => col.sorter)
+    .map((sorterCol) => sorterCol.dataKey)
 
   // ******************** 行渲染 ***********************
   const renderBaseRow = (cols, index, isSticky) => {
@@ -120,7 +124,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
       expandedRender && index === 0 && 'expandedButton'
     ]
       .concat(cols)
-      .filter(column => !!column)
+      .filter((column) => !!column)
     return (
       <tr key={index}>
         {_colums.map((c, idx) => {
@@ -141,10 +145,10 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
                   indeterminate={
                     !isAllChecked && rowSelection.selectedRowKeys.length > 0
                   }
-                  onChange={e => {
+                  onChange={(e) => {
                     if (rowSelection.onChange) {
                       rowSelection.onChange(
-                        isAllChecked ? [] : flatTreeData(data).map(d => d.key)
+                        isAllChecked ? [] : flatTreeData(data).map((d) => d.key)
                       )
                     }
                   }}
@@ -255,7 +259,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
           marginBottom: !isFixed && -scrollBarSize,
           height: eachHeaderHeight + 20 || 'auto'
         }}
-        onScroll={e => {
+        onScroll={(e) => {
           syncScrollLeft(
             headerTableRef.current.scrollLeft,
             bodyTableRef.current

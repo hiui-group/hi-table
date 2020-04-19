@@ -45,6 +45,12 @@
     display: flex;
     justify-content: flex-end;
     margin-top: 20px;
+    &--left {
+      justify-content: flex-start;
+    }
+    &--middle {
+      justify-content: center;
+    }
   }
   &--small {
     table {
