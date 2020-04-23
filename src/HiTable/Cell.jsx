@@ -16,39 +16,29 @@ const Cell = ({
   rowIndex,
   isTree
 }) => {
-  const {
-    highlightedColKeys,
-    highlightColumns,
-    alignRightColumns,
-    prefix
-  } = useContext(TableContext)
+  const { highlightedColKeys, highlightColumns, alignRightColumns, prefix } = useContext(
+    TableContext
+  )
   // 处理自定义 render 或者合并单元格情况
   let cellContent = column.render
     ? column.render(allRowData[column.dataKey], allRowData, rowIndex)
     : allRowData[column.dataKey]
-  const isMergeCell =
-    typeof cellContent === 'object' && !cellContent['$$typeof']
+  const isMergeCell = cellContent && typeof cellContent === 'object' && !cellContent['$$typeof']
 
-  if (
-    isMergeCell &&
-    (cellContent.props.colSpan === 0 || cellContent.props.rowSpan === 0)
-  ) {
+  if (isMergeCell && (cellContent.props.colSpan === 0 || cellContent.props.rowSpan === 0)) {
     return null
   }
   return (
     <td
       key={column.dataKey}
       style={{
-        textAlign: alignRightColumns.includes(column.dataKey)
-          ? 'right'
-          : 'left'
+        textAlign: alignRightColumns.includes(column.dataKey) ? 'right' : 'left'
       }}
       colSpan={(isMergeCell && cellContent.props.colSpan) || ''}
       rowSpan={(isMergeCell && cellContent.props.rowSpan) || ''}
       className={classNames({
         [`${prefix}__col--highlight`]:
-          highlightedColKeys.includes(column.dataKey) ||
-          highlightColumns.includes(column.dataKey)
+          highlightedColKeys.includes(column.dataKey) || highlightColumns.includes(column.dataKey)
       })}
     >
       {level > 1 && columnIndex === 0 && <Indent times={level - 1} />}
@@ -60,9 +50,7 @@ const Cell = ({
             onClick={() => {
               const _expandedTreeRows = [...expandedTreeRows]
               if (_expandedTreeRows.includes(rowData.key)) {
-                const idx = _expandedTreeRows.findIndex(
-                  (row) => row === rowData.key
-                )
+                const idx = _expandedTreeRows.findIndex((row) => row === rowData.key)
                 _expandedTreeRows.splice(idx, 1)
                 setExpandedTreeRows(_expandedTreeRows)
               } else {
@@ -72,12 +60,7 @@ const Cell = ({
             }}
           />
         ) : (
-          isTree && (
-            <span
-              style={{ width: 18, display: 'inline-block' }}
-              key={Math.random()}
-            />
-          )
+          isTree && <span style={{ width: 18, display: 'inline-block' }} key={Math.random()} />
         ))}
 
       {(isMergeCell && cellContent.children) || cellContent}
