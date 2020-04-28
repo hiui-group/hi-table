@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hi-table",
-  "version": "1.0.0-alpha.10",
+  "version": "1.0.0-alpha.11",
   "main": "lib/hi-table.js",
   "module": "es/hi-table.js",
   "files": [
