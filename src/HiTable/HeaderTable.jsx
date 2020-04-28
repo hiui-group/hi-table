@@ -5,12 +5,7 @@ import SettingMenu from './SettingMenu'
 import _ from 'lodash'
 import classnames from 'classnames'
 import { Checkbox } from '@hi-ui/hiui'
-import {
-  flatTreeData,
-  setDepth,
-  getLeafChildren,
-  groupDataByDepth
-} from './util'
+import { flatTreeData, setDepth, getLeafChildren, groupDataByDepth } from './util'
 import { Resizable } from 'react-resizable'
 
 const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
@@ -142,9 +137,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
               >
                 <Checkbox
                   checked={isAllChecked}
-                  indeterminate={
-                    !isAllChecked && rowSelection.selectedRowKeys.length > 0
-                  }
+                  indeterminate={!isAllChecked && rowSelection.selectedRowKeys.length > 0}
                   onChange={(e) => {
                     if (rowSelection.onChange) {
                       rowSelection.onChange(
@@ -178,12 +171,9 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
                 style={{
                   height: isFixed ? eachHeaderHeight : 'auto',
                   boxSizing: 'border-box',
-                  textAlign: alignRightColumns.includes(c.dataKey)
-                    ? 'right'
-                    : 'left',
+                  textAlign: alignRightColumns.includes(c.dataKey) ? 'right' : 'left',
                   background:
-                    highlightedColKeys.includes(c.dataKey) ||
-                    highlightColumns.includes(c.dataKey)
+                    highlightedColKeys.includes(c.dataKey) || highlightColumns.includes(c.dataKey)
                       ? '#F4F4F4'
                       : '#fbfbfb'
                 }}
@@ -210,14 +200,10 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
                 const minWidth = minColWidth[idx] + 31
                 const anotherMinWidth = minColWidth[idx + 1] + 31
                 let nextWidth = size.width > minWidth ? size.width : minWidth
-                let anotherWidth =
-                  realColumnsWidth[idx + 1] + realColumnsWidth[idx] - nextWidth
+                let anotherWidth = realColumnsWidth[idx + 1] + realColumnsWidth[idx] - nextWidth
                 if (anotherWidth <= anotherMinWidth) {
                   anotherWidth = anotherMinWidth
-                  nextWidth =
-                    realColumnsWidth[idx + 1] -
-                    anotherMinWidth +
-                    realColumnsWidth[idx]
+                  nextWidth = realColumnsWidth[idx + 1] - anotherMinWidth + realColumnsWidth[idx]
                 }
                 const newRealColumnsWidth = [...realColumnsWidth]
                 newRealColumnsWidth[idx] = nextWidth
@@ -257,17 +243,11 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
           overflowY: maxHeight && !isFixed ? 'scroll' : 'hidden',
           overflowX: isFixed ? 'hidden' : 'scroll',
           marginBottom: !isFixed && -scrollBarSize,
-          height: eachHeaderHeight + 20 || 'auto'
+          height: (eachHeaderHeight && eachHeaderHeight + 20) || 'auto'
         }}
         onScroll={(e) => {
-          syncScrollLeft(
-            headerTableRef.current.scrollLeft,
-            bodyTableRef.current
-          )
-          syncScrollLeft(
-            headerTableRef.current.scrollLeft,
-            stickyHeaderRef.current
-          )
+          syncScrollLeft(headerTableRef.current.scrollLeft, bodyTableRef.current)
+          syncScrollLeft(headerTableRef.current.scrollLeft, stickyHeaderRef.current)
         }}
       >
         <table
@@ -298,11 +278,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
               )
             })}
           </colgroup>
-          <thead>
-            {groupedColumns.map((group, index) =>
-              renderBaseRow(group, index, false)
-            )}
-          </thead>
+          <thead>{groupedColumns.map((group, index) => renderBaseRow(group, index, false))}</thead>
         </table>
       </div>
     </div>,
@@ -328,11 +304,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
               />
             ))}
           </colgroup>
-          <thead>
-            {groupedColumns.map((group, idx) =>
-              renderBaseRow(group, idx, true)
-            )}
-          </thead>
+          <thead>{groupedColumns.map((group, idx) => renderBaseRow(group, idx, true))}</thead>
         </table>
       </div>
     ),
@@ -365,11 +337,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
               )
             })}
           </colgroup>
-          <thead>
-            {groupedColumns.map((group, idx) =>
-              renderBaseRow(group, idx, true)
-            )}
-          </thead>
+          <thead>{groupedColumns.map((group, idx) => renderBaseRow(group, idx, true))}</thead>
         </table>
       </div>
     )
