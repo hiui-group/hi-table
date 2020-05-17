@@ -127,10 +127,9 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
         <td colSpan={columnsgroup.length} style={{ textAlign: 'center', height: 60 }}>
           <div
             style={{
-              position: 'absolute',
-              left: fatherRef.current && fatherRef.current.clientWidth / 2,
-              transform: 'translateX(-50%)',
-              bottom: 20
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
             }}
           >
             {typeof emptyContent === 'function' ? emptyContent() : emptyContent}

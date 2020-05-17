@@ -1,6 +1,6 @@
 {
   "name": "@hi-ui/hi-table",
-  "version": "1.0.0-alpha.11",
+  "version": "1.0.0-alpha.12",
   "main": "lib/hi-table.js",
   "module": "es/hi-table.js",
   "files": [
@@ -8,7 +8,7 @@
     "es"
   ],
   "dependencies": {
-    "@hi-ui/hiui": "^2.6.0",
+    "@hi-ui/hiui": "2.13.0-rc.30",
     "axios": "^0.19.0",
     "classnames": "^2.2.6",
     "react": "^16.9.0",
