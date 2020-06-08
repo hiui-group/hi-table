@@ -134,7 +134,7 @@ const StandardTable = () => {
                                 }}
                               />
                               <span style={{ display: 'inline-block', marginLeft: 9 }}>
-                                {c.title}
+                                {typeof c.title === 'function' ? c.title() : c.title}
                               </span>
                             </div>
 

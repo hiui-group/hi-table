@@ -179,7 +179,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
                 }}
               >
                 <span className='power-table__header__title'>
-                  {c.title}
+                  {typeof c.title === 'function' ? c.title() : c.title}
                   {showColMenu && c.isLast && (
                     <ColumnMenu
                       columnKey={c.dataKey}
