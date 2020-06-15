@@ -231,7 +231,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
         overflow: 'hidden',
         boxShadow: maxHeight && '0px 2px 6px 0px rgba(0,0,0,0.12)',
         position: 'relative',
-        height: (bordered ? eachHeaderHeight + 1 : eachHeaderHeight) || 'auto'
+        height: (eachHeaderHeight && (bordered ? eachHeaderHeight + 1 : eachHeaderHeight)) || 'auto'
       }}
     >
       {setting && !isFixed && <SettingMenu />}
