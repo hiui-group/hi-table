@@ -42,6 +42,7 @@ const Table = (props) => {
     prefix = 'power-table',
     fixedToColumn,
     sticky: _ceiling,
+    stickyTop = 0,
     setting,
     // *********
     sortCol,
@@ -131,9 +132,9 @@ const Table = (props) => {
       window.addEventListener('scroll', () => {
         if (
           hiTable &&
-          hiTable.current.getBoundingClientRect().top <= 0 &&
+          hiTable.current.getBoundingClientRect().top <= stickyTop &&
           hiTable &&
-          hiTable.current.getBoundingClientRect().bottom >= 35
+          hiTable.current.getBoundingClientRect().bottom >= stickyTop + 35
         ) {
           setCeiling(true)
           syncScrollLeft(bodyTableRef.current.scrollLeft, stickyHeaderRef.current)
@@ -147,7 +148,7 @@ const Table = (props) => {
         }
       })
     }
-  }, [_ceiling])
+  }, [_ceiling, stickyTop])
 
   useEffect(() => {
     if (dataSource) {
@@ -180,6 +181,7 @@ const Table = (props) => {
         leftFixedData,
         rightFixedData,
         ceiling,
+        stickyTop,
         headerVisible,
         scrollBarSize: getScrollBarSize(), // 滚动条宽度
         // 排序逻辑

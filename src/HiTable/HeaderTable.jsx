@@ -17,6 +17,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
     rightFixedColumns,
     expandedRender,
     ceiling,
+    stickyTop,
     scrollBarSize,
     highlightedColKeys,
     highlightColumns,
@@ -288,6 +289,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
         className={classnames(`${prefix}__header`, `${prefix}__header--sticky`)}
         ref={stickyHeaderRef}
         style={{
+          top: stickyTop,
           width: bodyWidth,
           borderLeft: bordered && '1px solid #e7e7e7'
         }}
@@ -313,6 +315,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
         key='fixed-ceiling'
         className={classnames(`${prefix}__header`, `${prefix}__header--sticky`)}
         style={{
+          top: stickyTop,
           display: ceiling ? 'block' : 'none',
           borderLeft: bordered && '1px solid #e7e7e7'
         }}
