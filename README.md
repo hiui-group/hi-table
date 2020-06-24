@@ -2110,6 +2110,7 @@ export default StandardTable
 | columns            | 表格列配置信息                                                                                          | ColumnItem[]                                   | -                                         | -          |
 | bordered           | 是否显示边框（表头分组模式下，表格自带边框）                                                            | boolean                                        | true \| false                             | false      |
 | sticky             | 是否支持表头吸顶                                                                                        | boolean                                        | true \| false                             | false      |
+| stickyTop          | 表头吸顶距离视口顶部距离                                                                                | number                                        | -                             | 0      |
 | highlightedColKeys | 高亮列（受控）                                                                                          | string[]                                       | -                                         | []         |
 | expandedRender     | 表格展开项                                                                                              | (record: dataItem, index: number) => ReactNode | -                                         | -          |
 | maxHeight          | 表格最大高度，当穿过该高度时，展示滚动条且表头固定                                                      | number                                         | -                                         | -          |
