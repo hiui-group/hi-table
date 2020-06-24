@@ -129,24 +129,28 @@ const Table = (props) => {
 
   useEffect(() => {
     if (_ceiling) {
-      window.addEventListener('scroll', () => {
-        if (
-          hiTable &&
-          hiTable.current.getBoundingClientRect().top <= stickyTop &&
-          hiTable &&
-          hiTable.current.getBoundingClientRect().bottom >= stickyTop + 35
-        ) {
-          setCeiling(true)
-          syncScrollLeft(bodyTableRef.current.scrollLeft, stickyHeaderRef.current)
-        } else {
-          setCeiling(false)
-        }
-        if (hiTable.current.getBoundingClientRect().bottom < 35) {
-          setHeaderVisible(false)
-        } else {
-          setHeaderVisible(true)
-        }
-      })
+      window.addEventListener(
+        'scroll',
+        () => {
+          if (
+            hiTable &&
+            hiTable.current.getBoundingClientRect().top <= stickyTop &&
+            hiTable &&
+            hiTable.current.getBoundingClientRect().bottom >= stickyTop + 35
+          ) {
+            setCeiling(true)
+            syncScrollLeft(bodyTableRef.current.scrollLeft, stickyHeaderRef.current)
+          } else {
+            setCeiling(false)
+          }
+          if (hiTable.current.getBoundingClientRect().bottom < 35) {
+            setHeaderVisible(false)
+          } else {
+            setHeaderVisible(true)
+          }
+        },
+        true
+      )
     }
   }, [_ceiling, stickyTop])
 
