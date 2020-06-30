@@ -133,8 +133,8 @@ const Table = (props) => {
         () => {
           if (
             hiTable &&
+            hiTable.current &&
             hiTable.current.getBoundingClientRect().top <= stickyTop &&
-            hiTable &&
             hiTable.current.getBoundingClientRect().bottom >= stickyTop + 35
           ) {
             setCeiling(true)
@@ -300,12 +300,12 @@ const TableWrapper = ({ columns, uniqueId, standard, ...settingProps }) => {
 
   const standardPreset = standard
     ? {
-      showColMenu: true,
-      sticky: true,
-      bordered: true,
-      setting: true,
-      striped: true
-    }
+        showColMenu: true,
+        sticky: true,
+        bordered: true,
+        setting: true,
+        striped: true
+      }
     : {}
 
   // ***************
