@@ -12,7 +12,6 @@ import './style'
 const Table = (props) => {
   const hiTable = useRef(null)
   const [ceiling, setCeiling] = useState(false)
-  const [headerVisible, setHeaderVisible] = useState(true)
   const [activeSorterColumn, setActiveSorterColumn] = useState(null)
   const [activeSorterType, setActiveSorterType] = useState(null)
   const [highlightColumns, setHighlightColumns] = useState([])
@@ -143,11 +142,6 @@ const Table = (props) => {
           } else {
             setCeiling(false)
           }
-          if (hiTable.current.getBoundingClientRect().bottom < 35) {
-            setHeaderVisible(false)
-          } else {
-            setHeaderVisible(true)
-          }
         },
         true
       )
@@ -186,7 +180,6 @@ const Table = (props) => {
         rightFixedData,
         ceiling,
         stickyTop,
-        headerVisible,
         scrollBarSize: getScrollBarSize(), // 滚动条宽度
         // 排序逻辑
         activeSorterColumn,
