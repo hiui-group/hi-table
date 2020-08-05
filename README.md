@@ -16,7 +16,7 @@ render(<Table columns={columns} data={data} />, document.getElementById('app'))
 ## demo 演示
 
 ```bash
-git clone micode@micode.be.xiaomi.com:hiui/table-engine.git
+git clone https://github.com/hiui-group/hi-table.git
 
 npm i
 
