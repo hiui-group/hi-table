@@ -83,7 +83,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
       )
       setEachRowHeight(rowHeightArray)
     }
-  }, [data])
+  }, [data, setEachRowHeight])
 
   let hasTree = false
   if (_data && _data.length) {
@@ -137,7 +137,7 @@ const BodyTable = ({ fatherRef, emptyContent }) => {
         </td>
       </tr>
     )
-  }, [columnsgroup])
+  }, [columnsgroup.length, emptyContent])
   return (
     <div
       style={{

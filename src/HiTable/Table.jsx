@@ -18,7 +18,7 @@ const Table = (props) => {
   const [highlightRows, setHighlightRows] = useState([])
   const [freezeColumn, setFreezeColumn] = useState(null)
   const [hoverRow, setHoverRow] = useState(null)
-  const [serverTableConfig, setServerTableConfig] = useState({})
+  const [serverTableConfig, setServerTableConfig] = useState({data: [], columns: []})
   const [eachRowHeight, setEachRowHeight] = useState([])
   const [eachHeaderHeight, setEachHeaderHeight] = useState(null)
 
@@ -169,8 +169,8 @@ const Table = (props) => {
         highlightedRowKeys: _highlightRows,
         setHighlightRows,
         highlightedColKeys,
-        data: (dataSource && (serverTableConfig.data || [])) || data,
-        columns: (dataSource && (serverTableConfig.columns || [])) || columns,
+        data: dataSource ? (serverTableConfig.data) : data,
+        columns: dataSource ? (serverTableConfig.columns) : columns,
         expandedRender,
         leftFixedColumns: realLeftFixedColumns,
         rightFixedColumns: realRightFixedColumns,
@@ -300,12 +300,12 @@ const TableWrapper = ({ columns, uniqueId, standard, ...settingProps }) => {
 
   const standardPreset = standard
     ? {
-        showColMenu: true,
-        sticky: true,
-        bordered: true,
-        setting: true,
-        striped: true
-      }
+      showColMenu: true,
+      sticky: true,
+      bordered: true,
+      setting: true,
+      striped: true
+    }
     : {}
 
   // ***************

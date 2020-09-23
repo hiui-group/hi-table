@@ -30,33 +30,8 @@ import SumAvgTable from './demo/SumAvgTable'
 
 const App = () =>
   <div style={{ padding: 50 }}>
-    <StandardTable />
     <NormalTable />
-    <AlignTable />
-    <ZebraTable />
-    <RowErrorTable />
-    <RowSelectionTable />
-    <RowHighlightedTable />
-    <SumAvgTable />
-    <ColHighlightedTable />
-    <BorderedTable />
-    <LargeTable />
-    <SmallTable />
-    <SortTable />
-    <PaginationTable />
-    <CeilingTable />
-    <TreeTable />
-    <MergeCellTable />
-    <FixedHeaderTable />
-    <FixedTable />
-    <MultipleHeaderTable />
-    <ExpandedRowTable />
-    {
-      null && <div>
-
-        <ServerTable />
-
-      </div>}
+    <ServerTable />
   </div>
 
 ReactDOM.render(<App />, document.getElementById('root'))
