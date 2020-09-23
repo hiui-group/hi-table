@@ -9,7 +9,36 @@ import axios from 'axios'
 import FixedBodyTable from './FixedBodyTable'
 import './style'
 
-const Table = (props) => {
+const Table = ({
+  striped,
+  bordered,
+  resizable,
+  size,
+  errorRowKeys = [],
+  rowSelection,
+  data = [],
+  highlightedRowKeys = [],
+  highlightedColKeys = [],
+  columns = [],
+  expandedRender,
+  maxHeight,
+  pagination,
+  dataSource,
+  showColMenu,
+  prefix = 'power-table',
+  fixedToColumn,
+  sticky: _ceiling,
+  stickyTop = 0,
+  setting,
+  // *********
+  sortCol,
+  setSortCol,
+  visibleCols,
+  setVisibleCols,
+  setCacheVisibleCols,
+  scrollWidth,
+  emptyContent = '暂无数据'
+}) => {
   const hiTable = useRef(null)
   const [ceiling, setCeiling] = useState(false)
   const [activeSorterColumn, setActiveSorterColumn] = useState(null)
@@ -22,52 +51,25 @@ const Table = (props) => {
   const [eachRowHeight, setEachRowHeight] = useState([])
   const [eachHeaderHeight, setEachHeaderHeight] = useState(null)
 
-  const {
-    striped,
-    bordered,
-    resizable,
-    size,
-    errorRowKeys = [],
-    rowSelection,
-    data = [],
-    highlightedRowKeys = [],
-    highlightedColKeys = [],
-    columns = [],
-    expandedRender,
-    maxHeight,
-    pagination,
-    dataSource,
-    showColMenu,
-    prefix = 'power-table',
-    fixedToColumn,
-    sticky: _ceiling,
-    stickyTop = 0,
-    setting,
-    // *********
-    sortCol,
-    setSortCol,
-    visibleCols,
-    setVisibleCols,
-    setCacheVisibleCols,
-    scrollWidth,
-    emptyContent = '暂无数据'
-  } = props
-
   const [realColumnsWidth, setRealColumnsWidth] = useState(columns.map((c) => c.width || 'auto'))
 
   const firstRowRef = useRef(null)
-
   useEffect(() => {
-    setRealColumnsWidth(columns.map((c) => c.width || 'auto'))
-    setTimeout(() => {
-      if (firstRowRef.current) {
-        const _realColumnsWidth = Array.from(firstRowRef.current.childNodes).map(
-          (node) => node.clientWidth
-        )
-        setRealColumnsWidth(_realColumnsWidth)
+    if (!dataSource) {
+      setRealColumnsWidth(columns.map((c) => c.width || 'auto'))
+      const timer = setTimeout(() => {
+        if (firstRowRef.current) {
+          const _realColumnsWidth = Array.from(firstRowRef.current.childNodes).map(
+            (node) => node.clientWidth
+          )
+          setRealColumnsWidth(_realColumnsWidth)
+        }
+      })
+      return () => {
+        clearTimeout(timer)
       }
-    })
-  }, [columns])
+    }
+  }, [columns, dataSource])
 
   const flattedColumns = flatTreeData(columns)
   // 有表头分组那么也要 bordered
