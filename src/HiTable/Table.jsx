@@ -83,7 +83,8 @@ const Table = ({
   const rightFixedColumn = fixedToColumn && fixedToColumn.right
 
   let leftFixedIndex, rightFixedIndex
-  columns.forEach((c, index) => {
+  // TODO: 这里是考虑了多级表头的冻结，待优化
+  flattedColumns.forEach((c, index) => {
     if (leftFixedColumn === c.dataKey) {
       leftFixedIndex = index
     }
@@ -91,9 +92,9 @@ const Table = ({
       rightFixedIndex = index
     }
   })
-  const realLeftFixedColumns = [...columns].splice(0, leftFixedIndex + 1)
+  const realLeftFixedColumns = [...flattedColumns].splice(0, leftFixedIndex + 1)
   const leftFixedData = getFixedDataByFixedColumn(realLeftFixedColumns, data)
-  const realRightFixedColumns = [...columns].splice(rightFixedIndex)
+  const realRightFixedColumns = [...flattedColumns].splice(rightFixedIndex)
 
   const rightFixedData = getFixedDataByFixedColumn(realRightFixedColumns, data)
   // 同步滚动条

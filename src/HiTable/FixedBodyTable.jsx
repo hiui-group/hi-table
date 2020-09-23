@@ -12,6 +12,7 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
     rightFixedData,
     leftFixedColumns,
     rightFixedColumns,
+    columns,
     maxHeight,
     scrollBarSize,
     syncScrollTop,
@@ -34,6 +35,13 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
   let depthArray = []
   setDepth(_columns, 0, depthArray)
   const columnsgroup = flatTreeData(_columns).filter((col) => col.isLast)
+  // TODO: 这里是考虑了多级表头的冻结，待优化
+  // *********全量 col group
+  let allColumns = _.cloneDeep(columns)
+  let _depthArray = []
+  setDepth(allColumns, 0, _depthArray)
+  const allColumnsgroup = flatTreeData(allColumns).filter((col) => col.isLast)
+  // ***********
   const bodyInner = useRef(null)
   const renderRow = (row, level, index, allRowData) => {
     return (
@@ -143,18 +151,27 @@ const FixedBodyTable = ({ isFixed, rightFixedIndex }) => {
         >
           <colgroup>
             {columnsgroup.map((c, idx) => {
+              // TODO: 这里是考虑了多级表头的冻结，待优化
+              let width
+              allColumnsgroup.forEach((col, index) => {
+                if (col.dataKey === c.dataKey) {
+                  width = realColumnsWidth[index]
+                }
+              })
               return (
                 <col
                   key={idx}
                   style={{
-                    width:
-                      isFixed === 'left'
-                        ? realColumnsWidth[idx]
-                        : realColumnsWidth[idx + rightFixedIndex],
-                    minWidth:
-                      isFixed === 'left'
-                        ? realColumnsWidth[idx]
-                        : realColumnsWidth[idx + rightFixedIndex]
+                    width: width,
+                    minWidth: width
+                    // width:
+                    //   isFixed === 'left'
+                    //     ? realColumnsWidth[idx]
+                    //     : realColumnsWidth[idx + rightFixedIndex],
+                    // minWidth:
+                    //   isFixed === 'left'
+                    //     ? realColumnsWidth[idx]
+                    //     : realColumnsWidth[idx + rightFixedIndex]
                   }}
                 />
               )

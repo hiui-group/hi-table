@@ -69,7 +69,13 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
 
   let maxDepth = depthArray.length > 0 ? Math.max.apply(null, depthArray) : 0
   const columnsgroup = flatTreeData(_columns).filter((col) => col.isLast)
-
+  // TODO: 这里是考虑了多级表头的冻结，待优化
+  // *********全量 col group
+  let allColumns = _.cloneDeep(columns)
+  let _depthArray = []
+  setDepth(allColumns, 0, _depthArray)
+  const allColumnsgroup = flatTreeData(allColumns).filter((col) => col.isLast)
+  // ***********
   flatTreeData(_columns).forEach((column) => {
     let leafChildren = []
     getLeafChildren(column, leafChildren)
@@ -104,7 +110,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
     if (headerInner.current && !isFixed) {
       setEachHeaderHeight(headerInner.current.clientHeight)
     }
-  }, [headerInner])
+  }, [headerInner, isFixed, setEachHeaderHeight])
 
   // ********************处理排序逻辑
   // 可以排序的必须的是最后一级列
@@ -262,7 +268,11 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
             {columnsgroup.map((c, index) => {
               let width
               if (isFixed === 'right') {
-                width = realColumnsWidth[index + rightFixedIndex]
+                allColumnsgroup.forEach((col, idx) => {
+                  if (col.dataKey === c.dataKey) {
+                    width = realColumnsWidth[idx]
+                  }
+                })
               } else if (isFixed === 'left' || resizable) {
                 width = realColumnsWidth[index]
               } else {
@@ -323,18 +333,26 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
         <table style={{ width: 'auto' }}>
           <colgroup>
             {columnsgroup.map((c, idx) => {
+              let width
+              allColumnsgroup.forEach((col, index) => {
+                if (col.dataKey === c.dataKey) {
+                  width = realColumnsWidth[index]
+                }
+              })
               return (
                 <col
                   key={idx}
                   style={{
-                    width:
-                      isFixed === 'left'
-                        ? realColumnsWidth[idx]
-                        : realColumnsWidth[idx + rightFixedIndex],
-                    minWidth:
-                      isFixed === 'left'
-                        ? realColumnsWidth[idx]
-                        : realColumnsWidth[idx + rightFixedIndex]
+                    width: width,
+                    minWidth: width
+                    // width:
+                    //   isFixed === 'left'
+                    //     ? realColumnsWidth[idx]
+                    //     : realColumnsWidth[idx + rightFixedIndex],
+                    // minWidth:
+                    //   isFixed === 'left'
+                    //     ? realColumnsWidth[idx]
+                    //     : realColumnsWidth[idx + rightFixedIndex]
                   }}
                 />
               )
