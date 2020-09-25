@@ -69,7 +69,7 @@ const Table = ({
         clearTimeout(timer)
       }
     }
-  }, [columns, dataSource])
+  }, [columns, dataSource, data])
 
   const flattedColumns = flatTreeData(columns)
   // 有表头分组那么也要 bordered
