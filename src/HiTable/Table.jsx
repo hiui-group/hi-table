@@ -47,7 +47,7 @@ const Table = ({
   const [highlightRows, setHighlightRows] = useState([])
   const [freezeColumn, setFreezeColumn] = useState(null)
   const [hoverRow, setHoverRow] = useState(null)
-  const [serverTableConfig, setServerTableConfig] = useState({data: [], columns: []})
+  const [serverTableConfig, setServerTableConfig] = useState({ data: [], columns: [] })
   const [eachRowHeight, setEachRowHeight] = useState([])
   const [eachHeaderHeight, setEachHeaderHeight] = useState(null)
 
@@ -59,9 +59,7 @@ const Table = ({
       setRealColumnsWidth(columns.map((c) => c.width || 'auto'))
       const timer = setTimeout(() => {
         if (firstRowRef.current) {
-          const _realColumnsWidth = Array.from(firstRowRef.current.childNodes).map(
-            (node) => node.clientWidth
-          )
+          const _realColumnsWidth = Array.from(firstRowRef.current.childNodes).map((node) => node.clientWidth)
           setRealColumnsWidth(_realColumnsWidth)
         }
       })
@@ -77,8 +75,7 @@ const Table = ({
   // ******************* 列冻结 ********************
   // 左侧冻结
   const leftFixedColumn =
-    freezeColumn ||
-    (typeof fixedToColumn === 'string' ? fixedToColumn : fixedToColumn && fixedToColumn.left)
+    freezeColumn || (typeof fixedToColumn === 'string' ? fixedToColumn : fixedToColumn && fixedToColumn.left)
   // 右侧冻结
   const rightFixedColumn = fixedToColumn && fixedToColumn.right
 
@@ -116,9 +113,7 @@ const Table = ({
 
   const _pagination = (dataSource && serverTableConfig.pagination) || pagination
   // 高亮行
-  const _highlightRows = highlightedRowKeys.concat(
-    highlightRows.filter((row) => !highlightedRowKeys.includes(row.key))
-  )
+  const _highlightRows = highlightedRowKeys.concat(highlightRows.filter((row) => !highlightedRowKeys.includes(row.key)))
   // 需要右对齐的列
   const alignRightColumns = columns.filter((c) => c.align === 'right').map((col) => col.dataKey)
   // baseTable
@@ -172,8 +167,8 @@ const Table = ({
         highlightedRowKeys: _highlightRows,
         setHighlightRows,
         highlightedColKeys,
-        data: dataSource ? (serverTableConfig.data) : data,
-        columns: dataSource ? (serverTableConfig.columns) : columns,
+        data: dataSource ? serverTableConfig.data : data,
+        columns: dataSource ? serverTableConfig.columns : columns,
         expandedRender,
         leftFixedColumns: realLeftFixedColumns,
         rightFixedColumns: realRightFixedColumns,
@@ -241,18 +236,15 @@ const Table = ({
         {/* Left fixed table 左侧固定列表格 */}
         {leftFixedColumn && realLeftFixedColumns.length > 0 && (
           <div className={classnames(`${prefix}__container`, `${prefix}__container--fixed-left`)}>
-            <HeaderTable isFixed='left' />
-            <FixedBodyTable isFixed='left' />
+            <HeaderTable isFixed="left" />
+            <FixedBodyTable isFixed="left" />
           </div>
         )}
         {/* Right fixed table 右侧固定列表格 */}
         {rightFixedColumn && realRightFixedColumns.length > 0 && (
-          <div
-            className={classnames(`${prefix}__container`, `${prefix}__container--fixed-right`)}
-            style={{ right: 0 }}
-          >
-            <HeaderTable isFixed='right' rightFixedIndex={rightFixedIndex} />
-            <FixedBodyTable isFixed='right' rightFixedIndex={rightFixedIndex} />
+          <div className={classnames(`${prefix}__container`, `${prefix}__container--fixed-right`)} style={{ right: 0 }}>
+            <HeaderTable isFixed="right" rightFixedIndex={rightFixedIndex} />
+            <FixedBodyTable isFixed="right" rightFixedIndex={rightFixedIndex} />
           </div>
         )}
         {/* Pagination 分页组件 */}
@@ -303,12 +295,12 @@ const TableWrapper = ({ columns, uniqueId, standard, ...settingProps }) => {
 
   const standardPreset = standard
     ? {
-      showColMenu: true,
-      sticky: true,
-      bordered: true,
-      setting: true,
-      striped: true
-    }
+        showColMenu: true,
+        sticky: true,
+        bordered: true,
+        setting: true,
+        striped: true
+      }
     : {}
 
   // ***************

@@ -2,22 +2,13 @@ import React, { useRef, useState, useContext } from 'react'
 import TableContext from './context'
 import { Popper, Switch, Icon } from '@hi-ui/hiui'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd'
-import useClickOutside from './hooks/useClickOutside'
 
 const StandardTable = () => {
   const colMenuRef = useRef(null)
   const [showPopper, setShowPopper] = useState(false)
   const popperMenu = useRef(null)
-  useClickOutside(popperMenu, () => setShowPopper(false), colMenuRef)
 
-  const {
-    sortCol,
-    setSortCol,
-    visibleCols,
-    setVisibleCols,
-    setCacheVisibleCols,
-    columns
-  } = useContext(TableContext)
+  const { sortCol, setSortCol, visibleCols, setVisibleCols, setCacheVisibleCols, columns } = useContext(TableContext)
 
   const grid = 8
   const getItemStyle = (isDragging, draggableStyle) => ({
@@ -32,7 +23,7 @@ const StandardTable = () => {
     ...draggableStyle
   })
 
-  const getListStyle = isDraggingOver => ({
+  const getListStyle = (isDraggingOver) => ({
     padding: grid,
     width: 250
   })
@@ -59,17 +50,11 @@ const StandardTable = () => {
         background: 'rgb(251, 251, 251)'
       }}
     >
-      <Icon name='set' />
-      <Popper
-        show={showPopper}
-        attachEle={colMenuRef.current}
-        zIndex={1040}
-        placement='bottom-end'
-        width='250'
-      >
+      <Icon name="set" />
+      <Popper show={showPopper} attachEle={colMenuRef.current} zIndex={1040} placement="bottom-end" width="250">
         <div ref={popperMenu}>
           <DragDropContext
-            onDragEnd={result => {
+            onDragEnd={(result) => {
               if (result.destination) {
                 const _sortCol = [...sortCol]
                 const [removed] = _sortCol.splice(result.source.index, 1)
@@ -78,8 +63,8 @@ const StandardTable = () => {
               }
             }}
           >
-            <Droppable droppableId='droppable'>
-              {(provided, snapshot) =>
+            <Droppable droppableId="droppable">
+              {(provided, snapshot) => (
                 <div
                   {...provided.droppableProps}
                   ref={provided.innerRef}
@@ -98,9 +83,9 @@ const StandardTable = () => {
                   {...provided.droppableProps}
                 >
                   <div style={{ padding: '16px 20px' }}>
-                    {sortCol.map((c, index) =>
+                    {sortCol.map((c, index) => (
                       <Draggable key={c.dataKey} draggableId={c.dataKey} index={index}>
-                        {(provided, snapshot) =>
+                        {(provided, snapshot) => (
                           <div
                             ref={provided.innerRef}
                             {...provided.draggableProps}
@@ -122,14 +107,12 @@ const StandardTable = () => {
                               }}
                             >
                               <Switch
-                                checked={visibleCols.map(vc => vc.dataKey).includes(c.dataKey)}
-                                onChange={checked => {
+                                checked={visibleCols.map((vc) => vc.dataKey).includes(c.dataKey)}
+                                onChange={(checked) => {
                                   if (checked) {
                                     setVisibleCols(visibleCols.concat(c))
                                   } else {
-                                    setVisibleCols(
-                                      visibleCols.filter(col => col.dataKey !== c.dataKey)
-                                    )
+                                    setVisibleCols(visibleCols.filter((col) => col.dataKey !== c.dataKey))
                                   }
                                 }}
                               />
@@ -138,10 +121,11 @@ const StandardTable = () => {
                               </span>
                             </div>
 
-                            <Icon name='columns' />
-                          </div>}
+                            <Icon name="columns" />
+                          </div>
+                        )}
                       </Draggable>
-                    )}
+                    ))}
                   </div>
                   {provided.placeholder}
                   <div
@@ -159,30 +143,30 @@ const StandardTable = () => {
                         borderRight: '1px solid rgba(231,231,231,1)',
                         cursor: 'pointer'
                       }}
-                      onClick={e => {
+                      onClick={(e) => {
                         setShowPopper(false)
                         setCacheVisibleCols(
-                          sortCol.filter(c => visibleCols.map(vc => vc.dataKey).includes(c.dataKey))
+                          sortCol.filter((c) => visibleCols.map((vc) => vc.dataKey).includes(c.dataKey))
                         )
                       }}
                     >
-                    确定
+                      确定
                     </div>
                     <div
                       style={{ width: '50%', textAlign: 'center', cursor: 'pointer' }}
-                      onClick={e => {
+                      onClick={(e) => {
                         setVisibleCols(columns)
                         setCacheVisibleCols(columns)
                       }}
                     >
-                    重置
+                      重置
                     </div>
                   </div>
-                </div>}
+                </div>
+              )}
             </Droppable>
           </DragDropContext>
         </div>
-
       </Popper>
     </div>
   )

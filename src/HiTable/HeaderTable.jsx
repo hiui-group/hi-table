@@ -63,21 +63,21 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
   if (isFixed === 'right') {
     headerColumns = rightFixedColumns
   }
-  let _columns = _.cloneDeep(headerColumns)
-  let depthArray = []
+  const _columns = _.cloneDeep(headerColumns)
+  const depthArray = []
   setDepth(_columns, 0, depthArray)
 
-  let maxDepth = depthArray.length > 0 ? Math.max.apply(null, depthArray) : 0
+  const maxDepth = depthArray.length > 0 ? Math.max.apply(null, depthArray) : 0
   const columnsgroup = flatTreeData(_columns).filter((col) => col.isLast)
   // TODO: 这里是考虑了多级表头的冻结，待优化
   // *********全量 col group
-  let allColumns = _.cloneDeep(columns)
-  let _depthArray = []
+  const allColumns = _.cloneDeep(columns)
+  const _depthArray = []
   setDepth(allColumns, 0, _depthArray)
   const allColumnsgroup = flatTreeData(allColumns).filter((col) => col.isLast)
   // ***********
   flatTreeData(_columns).forEach((column) => {
-    let leafChildren = []
+    const leafChildren = []
     getLeafChildren(column, leafChildren)
     // 在最后一层，colspan = 1, rowspan = maxDepth - depth + 1
     // 不在最后一层，rowspan = 1, colspan = 叶子节点后代数量
@@ -89,17 +89,9 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
   // ********************
 
   useEffect(() => {
-    if (
-      headerInner.current &&
-      headerInner.current.childNodes &&
-      headerInner.current.childNodes[1].childNodes[0]
-    ) {
-      const _minColWidth = Array.from(
-        headerInner.current.childNodes[1].childNodes[0].childNodes
-      ).map((th) => {
-        return th.childNodes[0].className === 'power-table__header__title'
-          ? th.childNodes[0].offsetWidth
-          : 0
+    if (headerInner.current && headerInner.current.childNodes && headerInner.current.childNodes[1].childNodes[0]) {
+      const _minColWidth = Array.from(headerInner.current.childNodes[1].childNodes[0].childNodes).map((th) => {
+        return th.childNodes[0].className === 'power-table__header__title' ? th.childNodes[0].offsetWidth : 0
       })
       setMinColWidth(_minColWidth)
     }
@@ -115,16 +107,11 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
   // ********************处理排序逻辑
   // 可以排序的必须的是最后一级列
 
-  const hasSorterColumn = columnsgroup
-    .filter((col) => col.sorter)
-    .map((sorterCol) => sorterCol.dataKey)
+  const hasSorterColumn = columnsgroup.filter((col) => col.sorter).map((sorterCol) => sorterCol.dataKey)
 
   // ******************** 行渲染 ***********************
   const renderBaseRow = (cols, index, isSticky) => {
-    const _colums = [
-      rowSelection && index === 0 && 'checkbox',
-      expandedRender && index === 0 && 'expandedButton'
-    ]
+    const _colums = [rowSelection && index === 0 && 'checkbox', expandedRender && index === 0 && 'expandedButton']
       .concat(cols)
       .filter((column) => !!column)
     return (
@@ -135,7 +122,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
             cell = (
               <th
                 rowSpan={groupedColumns.length}
-                key='checkbox'
+                key="checkbox"
                 style={{
                   boxSizing: 'border-box',
                   width: 50,
@@ -147,9 +134,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
                   indeterminate={!isAllChecked && rowSelection.selectedRowKeys.length > 0}
                   onChange={(e) => {
                     if (rowSelection.onChange) {
-                      rowSelection.onChange(
-                        isAllChecked ? [] : flatTreeData(data).map((d) => d.key)
-                      )
+                      rowSelection.onChange(isAllChecked ? [] : flatTreeData(data).map((d) => d.key))
                     }
                   }}
                 />
@@ -158,7 +143,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
           } else if (c === 'expandedButton') {
             cell = (
               <th
-                key='expandedButton'
+                key="expandedButton"
                 rowSpan={groupedColumns.length}
                 style={{
                   boxSizing: 'border-box',
@@ -185,7 +170,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
                       : '#fbfbfb'
                 }}
               >
-                <span className='power-table__header__title'>
+                <span className="power-table__header__title">
                   {typeof c.title === 'function' ? c.title() : c.title}
                   {showColMenu && c.isLast && (
                     <ColumnMenu
@@ -231,7 +216,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
 
   return [
     <div
-      key='normal'
+      key="normal"
       style={{
         borderLeft: bordered && '1px solid #e7e7e7',
         borderTop: bordered && '1px solid #e7e7e7',
@@ -244,7 +229,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
       {setting && !isFixed && <SettingMenu />}
       <div
         className={`${prefix}__header`}
-        key='normal'
+        key="normal"
         ref={isFixed ? null : headerTableRef}
         style={{
           overflowY: maxHeight && !isFixed ? 'scroll' : 'hidden',
@@ -295,7 +280,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
     </div>,
     !isFixed && ceiling && (
       <div
-        key='ceiling'
+        key="ceiling"
         className={classnames(`${prefix}__header`, `${prefix}__header--sticky`)}
         ref={stickyHeaderRef}
         style={{
@@ -322,7 +307,7 @@ const HeaderTable = ({ isFixed, bodyWidth, rightFixedIndex }) => {
     ),
     isFixed && ceiling && (
       <div
-        key='fixed-ceiling'
+        key="fixed-ceiling"
         className={classnames(`${prefix}__header`, `${prefix}__header--sticky`)}
         style={{
           top: stickyTop,

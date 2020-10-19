@@ -24,19 +24,21 @@ const ColumnMenu = ({ columnKey, canSort, isSticky }) => {
   const _showPopper = ceiling ? isSticky && showPopper : showPopper
 
   return (
-    <span ref={menuRef} onClick={() => {
-      setShowPopper(!showPopper)
-    }}>
-      <Icon name='down' style={{ marginLeft: 4, cursor: 'pointer' }} />
+    <span
+      ref={menuRef}
+      onClick={() => {
+        setShowPopper(!showPopper)
+      }}
+    >
+      <Icon name="down" style={{ marginLeft: 4, cursor: 'pointer' }} />
       <Popper show={_showPopper} attachEle={menuRef.current} zIndex={1040}>
         <div className={[`${prefix}__col-menu`]} ref={popperMenu}>
-          {canSort &&
+          {canSort && (
             <div
               className={classNames(`${prefix}__col-menu__item`, {
-                'col-menu__item--highlight':
-                  activeSorterType === 'ascend' && activeSorterColumn === columnKey
+                'col-menu__item--highlight': activeSorterType === 'ascend' && activeSorterColumn === columnKey
               })}
-              onClick={e => {
+              onClick={(e) => {
                 if (activeSorterType === 'ascend' && activeSorterColumn === columnKey) {
                   setActiveSorterType(null)
                   setActiveSorterColumn(null)
@@ -48,15 +50,15 @@ const ColumnMenu = ({ columnKey, canSort, isSticky }) => {
               }}
             >
               升序
-              <Icon name='asc' />
-            </div>}
-          {canSort &&
+              <Icon name="asc" />
+            </div>
+          )}
+          {canSort && (
             <div
               className={classNames(`${prefix}__col-menu__item`, {
-                'col-menu__item--highlight':
-                  activeSorterType === 'descend' && activeSorterColumn === columnKey
+                'col-menu__item--highlight': activeSorterType === 'descend' && activeSorterColumn === columnKey
               })}
-              onClick={e => {
+              onClick={(e) => {
                 if (activeSorterType === 'descend' && activeSorterColumn === columnKey) {
                   setActiveSorterType(null)
                   setActiveSorterColumn(null)
@@ -68,15 +70,16 @@ const ColumnMenu = ({ columnKey, canSort, isSticky }) => {
               }}
             >
               降序
-              <Icon name='desc' />
-            </div>}
+              <Icon name="desc" />
+            </div>
+          )}
           <div
             className={classNames(`${prefix}__col-menu__item`, {
               'col-menu__item--highlight': highlightColumns.includes(columnKey)
             })}
-            onClick={e => {
+            onClick={(e) => {
               if (highlightColumns.includes(columnKey)) {
-                setHighlightColumns(highlightColumns.filter(c => c !== columnKey))
+                setHighlightColumns(highlightColumns.filter((c) => c !== columnKey))
               } else {
                 setHighlightColumns(highlightColumns.concat(columnKey))
               }
@@ -84,14 +87,14 @@ const ColumnMenu = ({ columnKey, canSort, isSticky }) => {
             }}
           >
             高亮
-            <Icon name='mark' />
+            <Icon name="mark" />
           </div>
 
           <div
             className={classNames(`${prefix}__col-menu__item`, {
               'col-menu__item--highlight': freezeColumn === columnKey
             })}
-            onClick={e => {
+            onClick={(e) => {
               if (freezeColumn === columnKey) {
                 setFreezeColumn(null)
               } else {
@@ -101,7 +104,7 @@ const ColumnMenu = ({ columnKey, canSort, isSticky }) => {
             }}
           >
             冻结
-            <Icon name='lock' />
+            <Icon name="lock" />
           </div>
         </div>
       </Popper>
